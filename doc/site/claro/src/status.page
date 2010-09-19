@@ -1,0 +1,66 @@
+---
+title: "Status"
+inMenu: true
+directoryName: Claro
+---
+h1. Status
+
+h2. Object Status
+
+|_.Object       |_.GTK          |_.Win32        |_.MacOSX       |_.Notes        |
+|Image Loader   |(status_done).Done           |(status_done).Done *         |(status_done).Done           |(status_done).Done - * Win32 PNG Alpha using libpng.. pity about the extra bloat that gives :{ Still a bug in it, too |
+|Fonts          |(status_wait).&nbsp;         |(status_wait).&nbsp;         |(status_wait).&nbsp;         |Is this needed? Maybe we should just use defaults as we do now.. Hmm. Maybe an /option/ to force it would be good ;)         |
+|List           |(status_done).Done           |(status_done).Done           |(status_done).Done           |Used by Toolbar, ListView, ...|
+
+h2. Widget Status
+
+|_.Widget       |_.GTK                        |_.Win32                      |_.MacOSX                     |_.Notes        |
+|\5(status_header).Completed|
+(status_done). |Label         |Done           |Done                         |Done                         |Done           |
+(status_done). |Checkbox      |Done           |Done                         |Done                         |Done           |
+(status_done). |Textbox       |Done           |Done                         |Done                         |Done           |
+(status_done). |Frame         |Done           |Done                         |Done                         |Done           |
+(status_done). |Progress      |Done           |Done                         |Done                         |Done           |
+(status_done). |Radio Button  |Done           |Done                         |Done                         |Done           |
+(status_done). |Image         |Done           |Done                         |Done                         |Done           |
+(status_done). |Canvas        |Done           |Done                         |Done                         |Uses "Cairo":http://www.cairographics.org/|
+(status_done). |ListBox       |Done           |Done                         |Done                         |Done           |
+(status_done). |Combo         |Done           |Done                         |Done                         |Done           |
+(status_done). |Menu Bar      |Done           |Done                         |Done                         |Done           |
+|\5(status_header).Mostly Completed|
+|Button         |(status_done).Done P1        |(status_done).Done P1        |(status_done).Done P1        |P1=basic P2=images on buttons|
+|Separator/Pane |(status_done).Done P2        |(status_done).Done P2        |(status_done).Done P2        |P1=basic P2=sizing functions and corrections  -- Win32 pre-XP still flickers, also may need styling.|
+|Window         |(status_done).Done P2        |(status_done).Done P2        |(status_done).Done P1        |P1=basic P2=Dialogs and other more advanced flags|
+|ListView       |(status_done).Done P2        |(status_done).Done P2        |(status_done).Done P2        |P1=basic support P2=support for progress bars and checkboxes in columns P3=proper column sizing and data editing support|
+|\5(status_header).Not yet portable|
+|Status Bar     |(status_done).Done           |(status_done).Done           |(status_wait).&nbsp;         |Only supports single status item, need more functions|
+|Toolbar        |(status_done).Done P2        |(status_done).Done P1        |(status_wait).Started        |P1=conforms to flags, supports images and text, but NOT popup sub-item lists|
+|Workspace      |(status_done).Started        |(status_done).Done           |(status_wait).&nbsp;         |Multiple Document Interface.. Possibly using "GTK ADI":http://gtkadi.sourceforge.net/ on GTK. |
+|Popup Menu     |(status_done).Done           |(status_done).Done           |(status_wait).&nbsp;         |(status_wait).&nbsp;         |
+|Scrollbar      |(status_done).Done           |(status_done).Done           |(status_wait).&nbsp;         |(status_wait).&nbsp;         |
+|TreeView       |(status_done).Done P1        |(status_done).Done P2        |(status_wait).&nbsp;         |P1=basic P2=colours per-item |
+|\5(status_header).Initial design started|
+|Multiline Text |(status_wait).Started        |(status_wait).Started        |(status_wait).&nbsp;         |Need to figure out the right API design here, then finish them.|
+|Dialog Box     |(status_wait).Started        |(status_wait).Started        |(status_wait).Started        |Won't be native since easier with LEL.|
+|\5(status_header).Incomplete|
+|Font Selector  |(status_wait).&nbsp;         |(status_wait).&nbsp;         |(status_wait).&nbsp;         |(status_wait).&nbsp;         |
+|Color Selector |(status_wait).&nbsp;         |(status_wait).&nbsp;         |(status_wait).&nbsp;         |(status_wait).&nbsp;         |
+|File Chooser   |(status_wait).&nbsp;         |(status_wait).&nbsp;         |(status_wait).&nbsp;         |(status_wait).&nbsp;         |
+|Toggle Button  |(status_wait).&nbsp;         |(status_wait).&nbsp;         |(status_wait).&nbsp;         |(status_wait).&nbsp;         |
+|Tabs           |(status_wait).&nbsp;         |(status_wait).&nbsp;         |(status_wait).&nbsp;         |(status_wait).&nbsp;         |
+|Scale          |(status_wait).&nbsp;         |(status_wait).&nbsp;         |(status_wait).&nbsp;         |(status_wait).&nbsp;         |
+|Combo Entry    |(status_wait).&nbsp;         |(status_wait).&nbsp;         |(status_wait).&nbsp;         |(status_wait).&nbsp;         |
+
+h2. Language Status
+
+We're also busy creating bindings for Python, Ruby, and Lua that we hope
+will feel idiomatic to those users.  If you're familiar with one of these
+languages and are interested in shaping what could potentially be your
+dream GUI library, then feel free to contact us at the "mailing list":mailinglists.html
+and we'll probably let you join.
+
+|_.Language|_.GTK   |_.Win32 |_.MacOSX |_.Notes|
+|Python   |(status_wait).Working  |(status_wait).Untested  |(status_wait).Untested  |(status_wait).Functioning with almost identical API to C, using SWIG.|
+|Ruby     |(status_wait).&nbsp;   |(status_wait).&nbsp;    |(status_wait).&nbsp;    |-|
+|Lua      |(status_wait).&nbsp;   |(status_wait).&nbsp;    |(status_wait).&nbsp;    |-|
+

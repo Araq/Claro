@@ -1,0 +1,152 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!-- C++Builder XML Project -->
+<PROJECT>
+  <MACROS>
+    <VERSION value="BCB.05.03"/>
+    <PROJECT value="claroall.dll"/>
+    <OBJFILES value="..\src\claro\base\block.obj ..\src\claro\base\claro.obj 
+      ..\src\claro\base\hashtable.obj ..\src\claro\base\list.obj 
+      ..\src\claro\base\log.obj ..\src\claro\base\memory.obj 
+      ..\src\claro\base\object.obj ..\src\claro\base\object_map.obj 
+      ..\src\claro\base\oscompat.obj ..\src\claro\base\store.obj 
+      ..\src\claro\base\string.obj maindll.obj 
+      ..\src\claro\contextual\contextual.obj ..\src\claro\graphics\widget.obj 
+      ..\src\claro\graphics\font.obj ..\src\claro\graphics\graphics.obj 
+      ..\src\claro\graphics\system.obj ..\src\claro\graphics\layout\layout.obj 
+      ..\src\claro\graphics\layout\layout_heap.obj 
+      ..\src\claro\graphics\layout\layout_parser.obj 
+      ..\src\claro\graphics\widgets\button.obj 
+      ..\src\claro\graphics\widgets\canvas.obj 
+      ..\src\claro\graphics\widgets\checkbox.obj 
+      ..\src\claro\graphics\widgets\combo.obj 
+      ..\src\claro\graphics\widgets\container.obj 
+      ..\src\claro\graphics\widgets\dialog.obj 
+      ..\src\claro\graphics\widgets\font_dialog.obj 
+      ..\src\claro\graphics\widgets\frame.obj 
+      ..\src\claro\graphics\widgets\image.obj 
+      ..\src\claro\graphics\platform\win32\workspace_win32.obj 
+      ..\src\claro\graphics\platform\win32\button_win32.obj 
+      ..\src\claro\graphics\platform\win32\canvas_win32.obj 
+      ..\src\claro\graphics\platform\win32\checkbox_win32.obj 
+      ..\src\claro\graphics\platform\win32\combo_win32.obj 
+      ..\src\claro\graphics\platform\win32\container_win32.obj 
+      ..\src\claro\graphics\platform\win32\font_win32.obj 
+      ..\src\claro\graphics\platform\win32\fontdialog_win32.obj 
+      ..\src\claro\graphics\platform\win32\frame_win32.obj 
+      ..\src\claro\graphics\platform\win32\image_win32.obj 
+      ..\src\claro\graphics\platform\win32\images_win32.obj 
+      ..\src\claro\graphics\platform\win32\label_win32.obj 
+      ..\src\claro\graphics\platform\win32\listbox_win32.obj 
+      ..\src\claro\graphics\platform\win32\listview_win32.obj 
+      ..\src\claro\graphics\platform\win32\menu_win32.obj 
+      ..\src\claro\graphics\platform\win32\menubar_win32.obj 
+      ..\src\claro\graphics\platform\win32\opengl_win32.obj 
+      ..\src\claro\graphics\platform\win32\progressbar_win32.obj 
+      ..\src\claro\graphics\platform\win32\radio_win32.obj 
+      ..\src\claro\graphics\platform\win32\scrollbar_win32.obj 
+      ..\src\claro\graphics\platform\win32\splitter_win32.obj 
+      ..\src\claro\graphics\platform\win32\statusbar_win32.obj 
+      ..\src\claro\graphics\platform\win32\system_win32.obj 
+      ..\src\claro\graphics\platform\win32\textarea_win32.obj 
+      ..\src\claro\graphics\platform\win32\textbox_win32.obj 
+      ..\src\claro\graphics\platform\win32\toolbar_win32.obj 
+      ..\src\claro\graphics\platform\win32\treeview_win32.obj 
+      ..\src\claro\graphics\platform\win32\window_win32.obj 
+      ..\src\claro\graphics\platform\win32.obj ..\src\claro\net\sockets.obj 
+      ..\src\claro\relational\relation.obj"/>
+    <RESFILES value=""/>
+    <DEFFILE value=""/>
+    <RESDEPEN value="$(RESFILES)"/>
+    <LIBFILES value=""/>
+    <LIBRARIES value=""/>
+    <SPARELIBS value=""/>
+    <PACKAGES value="Vcl50.bpi Vclx50.bpi bcbsmp50.bpi dclocx50.bpi bcb2kaxserver50.bpi"/>
+    <PATHCPP value=".;..\src\claro\base;..\src\claro\contextual;..\src\claro\graphics;..\src\claro\graphics\layout;..\src\claro\graphics\widgets;..\src\claro\graphics\platform\win32;..\src\claro\graphics\platform;..\src\claro\net;..\src\claro\relational"/>
+    <PATHPAS value=".;"/>
+    <PATHRC value=".;"/>
+    <PATHASM value=".;"/>
+    <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
+    <RELEASELIBPATH value="$(BCB)\lib\release"/>
+    <LINKER value="tlink32"/>
+    <USERDEFINES value="_DEBUG"/>
+    <SYSDEFINES value="NO_STRICT;_NO_VCL"/>
+    <MAINSOURCE value="claroall.bpf"/>
+    <INCLUDEPATH value="..\src\claro\graphics\widgets;..\src\claro\relational;..\src\claro\net;..\src\claro\graphics\platform\win32\pngdib;..\src\claro\graphics\platform\win32;..\src\claro\graphics\platform;..\src\claro\graphics\layout;..\src\claro\graphics;..\src\claro\contextual;..\src\claro\base;..\src;$(BCB)\include;$(BCB)\include\vcl"/>
+    <LIBPATH value="..\src\claro\graphics\widgets;..\src\claro\relational;..\src\claro\net;..\src\claro\graphics\platform\win32\pngdib;..\src\claro\graphics\platform\win32;..\src\claro\graphics\platform;..\src\claro\graphics\layout;..\src\claro\graphics;..\src\claro\contextual;..\src\claro\base;$(BCB)\lib\obj;$(BCB)\lib"/>
+    <WARNINGS value="-w-par"/>
+  </MACROS>
+  <OPTIONS>
+    <CFLAG1 value="-WD -Od -H=$(BCB)\lib\vcl50.csm -Hc -Vx -Ve -X- -r- -a8 -b- -k -y -v -vi- 
+      -tWD -tWM- -c"/>
+    <PFLAGS value="-$YD -$W -$O- -v -JPHNE -M"/>
+    <RFLAGS value=""/>
+    <AFLAGS value="/mx /w2 /zd"/>
+    <LFLAGS value="-D&quot;&quot; -aa -Tpd -x -Gn -Gi -v"/>
+  </OPTIONS>
+  <LINKER>
+    <ALLOBJ value="c0d32.obj $(OBJFILES)"/>
+    <ALLRES value="$(RESFILES)"/>
+    <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cw32.lib"/>
+  </LINKER>
+  <IDEOPTIONS>
+[Version Info]
+IncludeVerInfo=0
+AutoIncBuild=0
+MajorVer=1
+MinorVer=0
+Release=0
+Build=0
+Debug=0
+PreRelease=0
+Special=0
+Private=0
+DLL=0
+Locale=1031
+CodePage=1252
+
+[Version Info Keys]
+CompanyName=
+FileDescription=
+FileVersion=1.0.0.0
+InternalName=
+LegalCopyright=
+LegalTrademarks=
+OriginalFilename=
+ProductName=
+ProductVersion=1.0.0.0
+Comments=
+
+[HistoryLists\hlIncludePath]
+Count=4
+Item0=..\src\claro\graphics\widgets;..\src\claro\relational;..\src\claro\net;..\src\claro\graphics\platform\win32\pngdib;..\src\claro\graphics\platform\win32;..\src\claro\graphics\platform;..\src\claro\graphics\layout;..\src\claro\graphics;..\src\claro\contextual;..\src\claro\base;..\src;$(BCB)\include;$(BCB)\include\vcl
+Item1=..\src\claro\graphics\widgets;..\src\claro\relational;..\src\claro\net;..\src\claro\graphics\platform\win32\pngdib;..\src\claro\graphics\platform\win32;..\src\claro\graphics\platform;..\src\claro\graphics\layout;..\src\claro\graphics;..\src\claro\contextual;..\src\claro\base;..\src\claro;$(BCB)\include;$(BCB)\include\vcl
+Item2=..\src\claro\graphics\widgets;..\src\claro\relational;..\src\claro\net;..\src\claro\graphics\platform\win32\pngdib;..\src\claro\graphics\platform\win32;..\src\claro\graphics\platform;..\src\claro\graphics\layout;..\src\claro\graphics;..\src\claro\contextual;..\src\claro\base;C:\Eigenes\claro\src\claro;$(BCB)\include;$(BCB)\include\vcl
+Item3=..\src\claro\graphics\widgets;..\src\claro\relational;..\src\claro\net;..\src\claro\graphics\platform\win32\pngdib;..\src\claro\graphics\platform\win32;..\src\claro\graphics\platform;..\src\claro\graphics\layout;..\src\claro\graphics;..\src\claro\contextual;..\src\claro\base;$(BCB)\include;$(BCB)\include\vcl
+
+[HistoryLists\hlLibraryPath]
+Count=1
+Item0=..\src\claro\graphics\widgets;..\src\claro\relational;..\src\claro\net;..\src\claro\graphics\platform\win32\pngdib;..\src\claro\graphics\platform\win32;..\src\claro\graphics\platform;..\src\claro\graphics\layout;..\src\claro\graphics;..\src\claro\contextual;..\src\claro\base;$(BCB)\lib\obj;$(BCB)\lib
+
+[HistoryLists\hlDebugSourcePath]
+Count=1
+Item0=$(BCB)\source\vcl
+
+[HistoryLists\hlConditionals]
+Count=1
+Item0=_DEBUG
+
+[Debugging]
+DebugSourceDirs=$(BCB)\source\vcl
+
+[Parameters]
+RunParams=
+HostApplication=
+RemoteHost=
+RemotePath=
+RemoteDebug=0
+
+[Compiler]
+ShowInfoMsgs=0
+LinkDebugVcl=0
+  </IDEOPTIONS>
+</PROJECT>

@@ -1,0 +1,14 @@
+---
+title: "Documentation"
+inMenu: true
+directoryName: Claro
+---
+h2. Documentation
+
+You can check out the "API":api/html/index.html docs for the current
+library documentation.  We'll be adding tutorials shortly.
+
+Check out the "introduction":intro.html for a small example of building
+a Claro application from scratch.  It doesn't cover how to actually do
+the build, but we're not done simplifying that.
+

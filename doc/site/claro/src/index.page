@@ -1,0 +1,124 @@
+---
+title: "About Claro Graphics"
+inMenu: true
+directoryName: Claro
+---
+h1. About Claro Graphics
+
+Claro Graphics ("claro.graphics") is a Graphical User Interface (GUI) platform abstraction
+library for C and other languages. Claro Graphics is different to most other graphics 
+toolkits in that it doesn't try to re-invent the wheel, but rather is a layer above the existing
+toolkits available (Win32 API, GTK, Cocoa, ...). The result is that applications look and function
+like the user expects on their respective system.
+
+Claro Graphics is a module of the "Claro":http://www.libclaro.org/ framework. Claro aims to
+provide a large array of useful tools for software developers that, where needed, use the native OSs
+functions to provide faster/cleaner results.
+
+However, it doesn't just end there. We do believe in inventing new systems that make life
+easier, so we provide great time-saving options like our advanced layout engine called 
+"Layout Expression Language (LEL)":intro.html
+
+The simple API of Claro Graphics makes it ideal to use in scripting languages.  We feel 
+so strongly about this that we're going to strive to support Ruby, Python, and Lua.
+This is possible simple because the library consists of very simple C function calls and 
+simple components.
+
+
+h2. Where did it start?
+
+Claro was originally started for the open-source rewrite of the "Bersirc":http://bersirc.free2code.net/
+IRC client. It seemed like a better idea to write a generic library rather than just writing the client
+on 3 different platforms. The existing libraries like Qt and GTK both had flaws on Windows & Mac OS X.
+So Claro was born to create a layer over the existing libraries (both graphics and sockets).
+
+Over the years, Claro has had 3 main branches. The first branch was more of a proof of concept, then 
+came the main stretch as "Claro" (just a GUI toolkit, dispite the original intentions). That branch 
+ended up hitting a brick wall because of some design flaws, but was kept moving slowly.
+
+In 2005, the "Free2Code":http://www.free2code.net/ IRC network (where Bersirc lives) merged in to
+the "AthemeNet":http://www.atheme.net/ Network: the network that houses the development of the 
+"Atheme IRC Services":http://www.atheme.org/ . It turned out they were also thinking of developing 
+a library with the original ideas of Claro, so the redesign began: "Claro" became "Claro Graphics"
+and their base library became "Claro Base".
+
+
+h2. The End Of Layout Hell
+
+Claro Graphics uses a very different layout mechanism from other GUI toolkits.
+In Claro Graphics you can code your entire GUI layout with a single string called 
+a 'lelex' (think "regex for LEL").  A lelex tells Claro how to layout your components 
+such that it doesn't matter how you build the interface, what you place in it, or even
+how it's sized.
+
+As an example, here's the entire layout from the canvas-test demo:
+
+<pre>
+  bounds_t b = { 50, 50, 220, 220 };
+  layout *lt = layout_create( "[][_<a|clock|<a][{40}Red|Green|Blue]", b, 10, 10 );
+</pre>
+
+This small set of code replaces reams and gobs of layout, boxing, packing, and containing
+code found in other frameworks.  It also make resizing and altering a layout fast and
+trivial to deal with.  The @"[][_<a|clock|<a][{40}Red|Green|Blue]"@ contains the 
+entire lelex for the interface and is quick to learn (unlike regular expressions).
+
+
+h2. Native Widgets
+
+Claro Graphics uses the native widget set of the platform rather than our feeble attempts
+at gray boxes.  Even though it uses the native widgets Claro Graphics tries to be small and
+useful without a lot of bloat and every component under the sun.  Instead, Claro Graphics gives
+you enough to get 90% of what you want done, and simple tools to add your own components as 
+needed.
+
+In addition to native components there's also some included libraries to implement
+common things not found on many platforms.  Currently "Cairo":http://www.cairographics.org/
+is used as the canvas API.
+
+
+h2. Cut The Crap
+
+Claro Graphics will *never* make you use crap like GTK's gint, weird string libraries, demanding
+excessive external libraries, or included crap that has nothing to do with the task of 
+making a nice user interface.  It'll always use the most normal C possible in order to make 
+scripting language hooks simpler to implement.
+
+Claro Graphics will also try to play nicely with other libraries (as long as they play nicely in return).
+
+
+h2. Simplicity First, Security Second
+
+Before you can run you have to walk.  With Claro Graphics we're trying to implement 
+the simplest GUI library that still provides you with the power you need to
+get your job done.  While doing this we hope to include solid coding practices 
+and simple checks to keep the library safe and secure.  It's not possible
+to get rid of all bugs, but we're damn sure going to try.
+
+Some of our strategies are:
+
+* Heavily use asserts and debugging libraries to prevent bugs and bad usage.
+* Lots of well written documentation.  Can't screw it up if you know how to use it.
+* Unit testing galore.  Yes, you *can* do unit tests in C.
+* Consistent builds and automation for all platforms thanks to SCons.
+
+
+h2. We Love Scripting Languages
+
+As mentioned before we plan to hook Claro Graphics into several scripting languages.
+Scripting languages are notorious for having horrible GUI options.
+
+We think that since Claro Graphics will be very small, very fast, use native components, and
+be written in straight clear C, that it would be an excellent library for scripting langauges 
+to use for a basic GUI platform.
+
+
+h2. Extra Goodies (If You Like)
+
+Claro Graphics is part of the "Claro":http://www.libclaro.org/ framework, which
+provides some useful functions for people who need them in their applications.
+
+We'll always make sure that you aren't forced to use anything you don't want.  The only
+Claro component requirement for Claro Graphics is the claro.base library. Otherwise, 
+you'll never have to compile/distribute sockets/whatever to use graphics.
+

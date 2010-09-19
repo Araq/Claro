@@ -1,0 +1,15 @@
+CFLAGS=-I../../src -I\\Python25\\include -I\\MinGW\\include\\cairo
+LDFLAGS=-L../../src/claro/base/ -L\\MinGW\\lib -L\\Python25\\libs -lpython25 -Wl,--export-dynamic -lclaro-graphics -L../../src/claro/graphics/ -lclaro-base -lgdi32 -lole32  -lcomctl32 -lmsvcp60 -lcairo
+SWIG=\\swigwin-1.3.29\\swig.exe
+
+all: _claro.pyd
+
+claro_wrap.c: claro.i
+	$(SWIG) -python claro.i
+
+_claro.dll: claro_wrap.o
+	gcc claro_wrap.o -o _claro.pyd -shared $(LDFLAGS)
+
+
+clean:
+	rm -rf *.c *.o *.dll *.pyc claro.py

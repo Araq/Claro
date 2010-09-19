@@ -1,0 +1,225 @@
+---
+title: "Introduction"
+inMenu: true
+directoryName: Claro
+---
+h1. Introduction To Claro
+
+This is a quick overview of Claro Graphics and a very basic demonstration of writing a 
+small application with it.  It doesn't cover building, installing, or mastering
+it.  The purpose is for people to get a quick grasp of Claro Graphics's capabilities and
+whether it'll be right for their usage.
+
+h2. The Lame Elevator Speech
+
+Everyone always wants that stupid 30 second pitch they can give to their boss as
+to why something should be used in the next Gizmodo 9000 project.  You really
+should evaluate Claro Graphics compared with other toolkits based on your needs and not on
+some cool-factor.  If there was an "elevator speech" for Claro Graphics it would probably
+be this:
+
+"Claro Graphics is great.  It basically gives you a simple C API to build 
+GUIs on all of our supported platforms.  Best of all it's really easy
+to use.  You know how we spend weeks getting a layout *just* right in
+Gizmodo 9000?  Well, Claro Graphics does all that in one or two lines of code.
+It's even got a sweet canvas widget that works the same on all platforms."
+
+
+h3. What Coders Want To Know
+
+As a programmer you probably want to know the deep secrets of Claro Graphics
+before you consider using it.  Here's the typical laundry list of 
+features you should be aware of:
+
+* Cross platform operation on Win32, Mac OSX, and anything running GTK (Linux, BSD, etc.).
+* Native components on each platform.
+* A great layout engine called LEL (Layout Expression Language) that lets you do very complex
+  layouts in a few lines of code.
+** LEL uses expressions that are kind of a mix of Regular Expressions and common WikiWiki
+   table syntax.  They are easy to learn, and are especially easier than learning a billion
+   complex Spacer/Container APIs.  One simple API gives you all the layout you ever need.
+** We call these expressions "lelex" (plural "lelex" like sheep).
+* Resizing in GUI libraries is typically very difficult as you end up juggling complex
+  containment operators and APIs just so that one component stays in one spot while others
+  flex.  With LEL you can not only build complete layouts quickly, but you also get
+  fast near realtime resizing.  The resizing that Claro Graphics can do is many times drastically
+  faster than the original native library's resizing algorithms.
+* A small core group of components that let you build up many other integrated components.
+* Simple callback based interaction operations that just require writing a single C function.
+* Claro Graphics uses the "Cairo":http://cairographics.org/introduction library to implement a 
+  cross-platform canvas widget that "looks and works the same":screenshots.html on all platforms.  
+  It even supports dynamic resizing and you use the wonderful Cairo API instead of some weird thing we cooked up.
+* We also try to make the library as easy to use as possible.  We're toying with a few special
+  "generator" macros to make common operations simple to develop, and we're going to hook
+  Claro Graphics into as many scripting languages as we possibly can.
+
+
+h2. How Claro Graphics Is Different
+
+At it's core Claro Graphics is really no different from Yet Another GUI Library(TM).  It has
+widgets, it has callbacks when you do stuff to the widgets, and it displays them on the
+screen.  What we believe makes Claro Graphics different is our focus on some core design
+decisions that we find makes the whole API sexier.
+
+
+h3. Cross Platform Like Crazy
+
+Claro Graphics is always being built on Windows(TM), Apple's(TM) OS X(TM), and Linux.  We have
+an "SCons":http://www.scons.org/ build that works dynamically on all platforms and
+automates much of the drudgery of building for multiple targets.  There's no complex
+and error prone @configure@ automake hell.
+
+Claro Graphics also tries to operate nearly the same on all platforms.  This is possible since
+the LEL layout engine works exactly the same on all platforms and doesn't need any 
+native information to do it's thing.  In our experience, layout is the #1 thing that
+is different on the various platforms.  By abstracting this problem away and illiminating 
+it, we can give a much better cross-platform experience.
+
+
+h3. Native Widgets
+
+When you build a program for a platform, you want it to look like the native look 
+that the normal programs have and not something "foreign".  Claro Graphics uses all the 
+native widgets it can, and builds custom widgets on some platforms only when needed.
+
+This doesn't prevent you though from grabbing the canvas widget and doing your own thing.
+
+h3. LEL For Layouts
+
+LEL (aka Layout Expression Language) is used by Claro Graphics to do all of the layout operations
+and dynamic resizing.  You aren't forced to use it though so you can feel free to do
+hand sizing in situations where it's necessary.  LEL works by processing a lelex that
+contains a small expression for how the layout should be organized.  The lelex 
+@[menu|menu|menu|menu][b1<|b2<|b3<|b4<|b5<|b6<][_text][text.input|>send]@ 
+was used to render this sample:
+
+!images/screenshots/gtk/layout_any.png!:examples/layout_any.c.html
+
+To read the above lelex you just need to know a few characters.
+
+* '[' and ']' -- Starts and ends a "row".  Rows have a default height, but you can put modifiers at the beginning to change it.
+* '|' -- Separates cells inside a row.  You can put any digits, uppercase, lowercase, or '.' chars between 
+  them to name cells.  Cells don't have to have names, which is common practice for "spacing" or empty cells.
+* '<' or '>' -- Put anywhere in a cell indicates the cell should take the minimum width.
+* '_' -- Put at the beginning of a row (like @[_text]@ above) and that row will take up the remaining
+  "unset" space.  Also known as the "flex" operator, you can have as many flexed rows as you want 
+  and LEL will make them divide the remaining unset space between them.
+
+There's more operators, but with these you can read the above line as, "Start a row with
+set of five menu cells (evenly spaced), then a set of buttons (b1-b6) that are all min width ('<'),
+then a flexed row for the text, and finally a row that has a text.input followed by a min-width
+send button on the right."
+
+Finally, LEL defaults rows to be minimum height, but cells to be flexed width.  This means that
+if you have a 300 pixels wide interface for the above menu row (first one) then they each take
+1/4 of that.  What's nice is as you resize the interface LEL recalculates all of this dynamically
+and fast as hell so that the elements flex to fit the new boundaries.
+
+h3. Simple, Simple, Simple
+
+Claro Graphics has a simple C based API that uses canonical C structures and idioms rather than
+trying to "invent a new C".  The use of LEL also makes it very simple to do layouts which
+typically is a very difficult thing even in Object Oriented languages.  Finally, whenever
+we find a way to make Claro Graphics simpler to use (either with macros or special functions) we
+implement it and do a sample.
+
+
+h2. Writing A Simple Claro Graphics Application
+
+Writing a Claro Graphics application will most likely change a bit in the future, but here's 
+a quick introduction to what you'd do now to make a simple application.  It doesn't
+cover builds, libraries, linking or other things you'll need to know.
+
+
+First, you have to include the right includes and setup a few variables to play with.
+
+<pre>
+#include <claro/base.h>
+#include <claro/graphics.h>
+#include <assert.h>
+
+object_t *window, *input, *chat, *send_btn;
+layout_t *lt;
+</pre>
+
+Then your main function like normal, and we'll put an initial bounds that
+starts the window at 50,50 with a 400x500 size:
+
+<pre>
+int main( int argc, char *argv[] )
+{
+    bounds_t b = { 50, 50, 400, 500 };
+</pre>
+
+Next we throw in the initialization stuff to set everything up for Claro to
+function properly and get the native widgets configured:
+
+<pre>
+    claro_base_init( );
+    claro_graphics_init( );
+</pre>
+
+Configure some logging:
+
+<pre>
+    log_fd_set_level( CL_DEBUG, stderr );
+    clog( CL_INFO, "%s running using Claro!", __FILE__ );    
+</pre>
+
+
+Now make a layout and a window that controls it:
+<pre>    
+    lt = layout_create("[_textbox][input|>send]", b, 30, 40);
+    window = window_widget_create_with_layout(NULL, lt, "My Simple Application", 0);
+</pre>
+
+Finally, we make each component and assign it the proper cell from the layout.
+The @lt_bounds@ function basically takes a layout_t and the text name of the
+cell and returns the right bounds.  The widget actually keeps this around internally
+so that when you call layout_reparse() to recalculate the layout the widget
+automatically gets it's sizing and position setup:
+
+<pre>
+    chat = textbox_widget_create(window, lt_bounds(lt, "textbox"), 0 );
+    widget_set_notify( WIDGET(chat), cNotifyKey );
+    textbox_set_text( chat, "> Welcome." );
+</pre>
+
+And next do the input and send cells with their widgets.  Notice we don't 
+have to do these in the order they appear inside the lelex?  This is very
+convenient since it lets you do lazy setups and organize your code the
+way it makes sense to you rather than to how it works inside the layout.
+
+<pre>
+    send_btn = button_widget_create( window, lt_bounds(lt, "send"), 0 );
+    button_set_text(send_btn, "Send" );
+
+    input = textbox_widget_create(window, lt_bounds(lt, "input"), 0);
+    widget_set_notify( WIDGET(input), cNotifyKey );
+</pre>
+
+Finally, we hook up the window, make it show and start the claro interaction
+loop:
+
+<pre>
+    window_show( window );
+    window_focus( window );
+    claro_loop( );
+}
+</pre>
+
+That's the entire code for which renders this interface:
+
+!images/screenshots/gtk/layout_test.png!
+
+Pretty easy eh?  Check out the "Screenshots":screenshots.html page to
+find out some of the other demos and code we've got done already. 
+
+
+h2. Finding Out More
+
+We've got an initial set of code and are quickly implementing as many widgets
+we can do, but we're always looking for people to help out.  If you're interested,
+please "subscribe to the mailing list":mailinglists.html.
+
+

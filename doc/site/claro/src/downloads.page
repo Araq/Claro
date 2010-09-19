@@ -1,0 +1,11 @@
+---
+title: "Downloads"
+inMenu: true
+directoryName: Claro
+---
+h2. Downloads
+
+The latest development branch of Claro Graphics is available as part of Claro:
+
+SVN: http://svn.atheme.org/claro/
+Browse: http://viewsvn.atheme.org/viewcvs.cgi/?root=claro

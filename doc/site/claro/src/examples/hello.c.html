@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<title>examples/helloworld/hello.c</title>
+<link rel="stylesheet" type="text/css" href="highlight.css">
+</head>
+<body class="hl">
+<pre class="hl"><span class="line">    1 </span><span class="dir">#include &lt;claro/base.h&gt;</span>
+<span class="line">    2 </span><span class="dir">#include &lt;claro/graphics.h&gt;</span>
+<span class="line">    3 </span>
+<span class="line">    4 </span>object_t <span class="sym">*</span>w<span class="sym">, *</span>t<span class="sym">, *</span>b<span class="sym">;</span>
+<span class="line">    5 </span>
+<span class="line">    6 </span><span class="kwb">void</span> <span class="kwd">push_my_button</span><span class="sym">(</span> object_t <span class="sym">*</span>obj<span class="sym">,</span> event_t <span class="sym">*</span>event <span class="sym">)</span>
+<span class="line">    7 </span><span class="sym">{</span>
+<span class="line">    8 </span>	<span class="kwd">textbox_set_text</span><span class="sym">(</span> t<span class="sym">,</span> <span class="str">&quot;You pushed my button!&quot;</span> <span class="sym">);</span>
+<span class="line">    9 </span>	<span class="kwd">button_set_text</span><span class="sym">(</span> obj<span class="sym">,</span> <span class="str">&quot;Ouch!&quot;</span> <span class="sym">);</span>
+<span class="line">   10 </span><span class="sym">}</span>
+<span class="line">   11 </span>
+<span class="line">   12 </span><span class="kwb">int</span> <span class="kwd">main</span><span class="sym">(</span> <span class="kwb">int</span> argc<span class="sym">,</span> <span class="kwb">char</span> <span class="sym">*</span>argv<span class="sym">[] )</span>
+<span class="line">   13 </span><span class="sym">{</span>
+<span class="line">   14 </span>	<span class="kwd">claro_base_init</span><span class="sym">( );</span>
+<span class="line">   15 </span>	<span class="kwd">claro_graphics_init</span><span class="sym">( );</span>
+<span class="line">   16 </span>
+<span class="line">   17 </span>	<span class="kwd">log_fd_set_level</span><span class="sym">(</span> CL_DEBUG<span class="sym">,</span> stderr <span class="sym">);</span>
+<span class="line">   18 </span>
+<span class="line">   19 </span>	<span class="kwd">clog</span><span class="sym">(</span> CL_INFO<span class="sym">,</span> <span class="str">&quot;%s running using Claro!&quot;</span><span class="sym">,</span> __FILE__ <span class="sym">);</span>
+<span class="line">   20 </span>
+<span class="line">   21 </span>	w <span class="sym">=</span> <span class="kwd">window_widget_create</span><span class="sym">(</span> <span class="num">0</span><span class="sym">,</span> <span class="kwd">new_bounds</span><span class="sym">(</span> <span class="num">100</span><span class="sym">,</span> <span class="num">100</span><span class="sym">,</span> <span class="num">230</span><span class="sym">,</span> <span class="num">230</span> <span class="sym">),</span> <span class="num">0</span> <span class="sym">);</span>
+<span class="line">   22 </span>	<span class="kwd">window_set_title</span><span class="sym">(</span> w<span class="sym">,</span> <span class="str">&quot;Hello, World!&quot;</span> <span class="sym">);</span>
+<span class="line">   23 </span>
+<span class="line">   24 </span>	t <span class="sym">=</span> <span class="kwd">textbox_widget_create</span><span class="sym">(</span> w<span class="sym">,</span> <span class="kwd">new_bounds</span><span class="sym">(</span> <span class="num">10</span><span class="sym">,</span> <span class="num">10</span><span class="sym">,</span> <span class="num">210</span><span class="sym">, -</span><span class="num">1</span> <span class="sym">),</span> <span class="num">0</span> <span class="sym">);</span>
+<span class="line">   25 </span>	<span class="kwd">widget_set_notify</span><span class="sym">(</span> <span class="kwd">WIDGET</span><span class="sym">(</span>t<span class="sym">),</span> cNotifyKey <span class="sym">);</span>
+<span class="line">   26 </span>	<span class="kwd">textbox_set_text</span><span class="sym">(</span> t<span class="sym">,</span> <span class="str">&quot;Yeehaw!&quot;</span> <span class="sym">);</span>
+<span class="line">   27 </span>
+<span class="line">   28 </span>	b <span class="sym">=</span> <span class="kwd">button_widget_create</span><span class="sym">(</span> w<span class="sym">,</span> <span class="kwd">new_bounds</span><span class="sym">(</span> <span class="num">40</span><span class="sym">,</span> <span class="num">45</span><span class="sym">,</span> <span class="num">150</span><span class="sym">, -</span><span class="num">1</span> <span class="sym">),</span> <span class="num">0</span> <span class="sym">);</span>
+<span class="line">   29 </span>	<span class="kwd">button_set_text</span><span class="sym">(</span> b<span class="sym">,</span> <span class="str">&quot;Push my button!&quot;</span> <span class="sym">);</span>
+<span class="line">   30 </span>
+<span class="line">   31 </span>	<span class="kwd">object_addhandler</span><span class="sym">(</span> b<span class="sym">,</span> <span class="str">&quot;pushed&quot;</span><span class="sym">,</span> push_my_button <span class="sym">);</span>
+<span class="line">   32 </span>
+<span class="line">   33 </span>	<span class="kwd">window_show</span><span class="sym">(</span> w <span class="sym">);</span>
+<span class="line">   34 </span>	<span class="kwd">window_focus</span><span class="sym">(</span> w <span class="sym">);</span>
+<span class="line">   35 </span>
+<span class="line">   36 </span>	<span class="kwd">block_heap_loginfo</span><span class="sym">( );</span>
+<span class="line">   37 </span>
+<span class="line">   38 </span>	<span class="kwd">claro_loop</span><span class="sym">( );</span>
+<span class="line">   39 </span>
+<span class="line">   40 </span>	<span class="kwa">return</span> <span class="num">0</span><span class="sym">;</span>
+<span class="line">   41 </span><span class="sym">}</span>
+</pre>
+</body>
+</html>
+<!--HTML generated by highlight 2.3-4 beta, http://www.andre-simon.de/-->

@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<title>examples/splitter/splitter-test.c</title>
+<link rel="stylesheet" type="text/css" href="highlight.css">
+</head>
+<body class="hl">
+<pre class="hl"><span class="line">    1 </span><span class="dir">#include &lt;claro/base.h&gt;</span>
+<span class="line">    2 </span><span class="dir">#include &lt;claro/graphics.h&gt;</span>
+<span class="line">    3 </span>
+<span class="line">    4 </span><span class="kwb">int</span> <span class="kwd">main</span><span class="sym">(</span> <span class="kwb">int</span> argc<span class="sym">,</span> <span class="kwb">char</span> <span class="sym">*</span>argv<span class="sym">[] )</span>
+<span class="line">    5 </span><span class="sym">{</span>
+<span class="line">    6 </span>	object_t <span class="sym">*</span>w<span class="sym">, *</span>sw<span class="sym">, *</span>sw2<span class="sym">, *</span>cw<span class="sym">;</span>
+<span class="line">    7 </span>	layout_t <span class="sym">*</span>lt<span class="sym">;</span>
+<span class="line">    8 </span>	object_t <span class="sym">*</span>btn<span class="sym">;</span>
+<span class="line">    9 </span>	bounds_t b <span class="sym">= {</span> <span class="num">50</span><span class="sym">,</span> <span class="num">50</span><span class="sym">,</span> <span class="num">300</span><span class="sym">,</span> <span class="num">300</span> <span class="sym">};</span>
+<span class="line">   10 </span>
+<span class="line">   11 </span>	<span class="kwd">claro_base_init</span><span class="sym">( );</span>
+<span class="line">   12 </span>	<span class="kwd">claro_graphics_init</span><span class="sym">( );</span>
+<span class="line">   13 </span>
+<span class="line">   14 </span>	<span class="kwd">log_fd_set_level</span><span class="sym">(</span> CL_DEBUG<span class="sym">,</span> stderr <span class="sym">);</span>
+<span class="line">   15 </span>
+<span class="line">   16 </span>	<span class="kwd">clog</span><span class="sym">(</span> CL_INFO<span class="sym">,</span> <span class="str">&quot;%s running using Claro!&quot;</span><span class="sym">,</span> __FILE__ <span class="sym">);</span>
+<span class="line">   17 </span>
+<span class="line">   18 </span>	lt <span class="sym">=</span> <span class="kwd">layout_create</span><span class="sym">(</span> <span class="str">&quot;[_splitter]&quot;</span><span class="sym">,</span> b<span class="sym">,</span> <span class="num">10</span><span class="sym">,</span> <span class="num">10</span> <span class="sym">);</span>
+<span class="line">   19 </span>
+<span class="line">   20 </span>	w <span class="sym">=</span> <span class="kwd">window_widget_create_with_layout</span><span class="sym">(</span>NULL<span class="sym">,</span> lt<span class="sym">,</span> <span class="str">&quot;Splitter Demo&quot;</span><span class="sym">,</span> <span class="num">0</span><span class="sym">);</span>
+<span class="line">   21 </span>
+<span class="line">   22 </span>	sw <span class="sym">=</span> <span class="kwd">splitter_widget_create</span><span class="sym">(</span> w<span class="sym">,</span> <span class="kwd">lt_bounds</span><span class="sym">(</span>lt<span class="sym">,</span> <span class="str">&quot;splitter&quot;</span><span class="sym">),</span> cSplitterHorizontal <span class="sym">);</span>
+<span class="line">   23 </span>
+<span class="line">   24 </span>	btn <span class="sym">=</span> <span class="kwd">button_widget_create</span><span class="sym">(</span> sw<span class="sym">,</span> NO_BOUNDS<span class="sym">,</span> <span class="num">0</span> <span class="sym">);</span>
+<span class="line">   25 </span>	<span class="kwd">button_set_text</span><span class="sym">(</span>btn<span class="sym">,</span> <span class="str">&quot;Button Left&quot;</span><span class="sym">);</span>
+<span class="line">   26 </span>
+<span class="line">   27 </span>	sw2 <span class="sym">=</span> <span class="kwd">splitter_widget_create</span><span class="sym">(</span> sw<span class="sym">,</span> NO_BOUNDS<span class="sym">,</span> cSplitterVertical <span class="sym">);</span>
+<span class="line">   28 </span>
+<span class="line">   29 </span>	btn <span class="sym">=</span> <span class="kwd">button_widget_create</span><span class="sym">(</span> sw2<span class="sym">,</span> NO_BOUNDS<span class="sym">,</span> <span class="num">0</span> <span class="sym">);</span>
+<span class="line">   30 </span>	<span class="kwd">button_set_text</span><span class="sym">(</span>btn<span class="sym">,</span> <span class="str">&quot;Button Top-Right&quot;</span><span class="sym">);</span>
+<span class="line">   31 </span>
+<span class="line">   32 </span>	cw <span class="sym">=</span> <span class="kwd">container_widget_create</span><span class="sym">(</span> sw2<span class="sym">,</span> NO_BOUNDS<span class="sym">,</span> <span class="num">0</span> <span class="sym">);</span>
+<span class="line">   33 </span>
+<span class="line">   34 </span>	lt <span class="sym">=</span> <span class="kwd">layout_create</span><span class="sym">(</span> <span class="str">&quot;[_ul|(10)|ur][{10}][_ll|(10)|lr]&quot;</span><span class="sym">,</span> b<span class="sym">,</span> <span class="num">10</span><span class="sym">,</span> <span class="num">10</span> <span class="sym">);</span>
+<span class="line">   35 </span>	<span class="kwd">object_set_parent</span><span class="sym">(</span> lt<span class="sym">,</span> cw <span class="sym">);</span>
+<span class="line">   36 </span>
+<span class="line">   37 </span>	btn <span class="sym">=</span> <span class="kwd">button_widget_create</span><span class="sym">(</span> cw<span class="sym">,</span> <span class="kwd">lt_bounds</span><span class="sym">(</span> lt<span class="sym">,</span> <span class="str">&quot;ul&quot;</span> <span class="sym">),</span> <span class="num">0</span> <span class="sym">);</span>
+<span class="line">   38 </span>	<span class="kwd">button_set_text</span><span class="sym">(</span>btn<span class="sym">,</span> <span class="str">&quot;B-U-L&quot;</span><span class="sym">);</span>
+<span class="line">   39 </span>
+<span class="line">   40 </span>	btn <span class="sym">=</span> <span class="kwd">button_widget_create</span><span class="sym">(</span> cw<span class="sym">,</span> <span class="kwd">lt_bounds</span><span class="sym">(</span> lt<span class="sym">,</span> <span class="str">&quot;ur&quot;</span> <span class="sym">),</span> <span class="num">0</span> <span class="sym">);</span>
+<span class="line">   41 </span>	<span class="kwd">button_set_text</span><span class="sym">(</span>btn<span class="sym">,</span> <span class="str">&quot;B-U-R&quot;</span><span class="sym">);</span>
+<span class="line">   42 </span>
+<span class="line">   43 </span>	btn <span class="sym">=</span> <span class="kwd">button_widget_create</span><span class="sym">(</span> cw<span class="sym">,</span> <span class="kwd">lt_bounds</span><span class="sym">(</span> lt<span class="sym">,</span> <span class="str">&quot;ll&quot;</span> <span class="sym">),</span> <span class="num">0</span> <span class="sym">);</span>
+<span class="line">   44 </span>	<span class="kwd">button_set_text</span><span class="sym">(</span>btn<span class="sym">,</span> <span class="str">&quot;B-L-L&quot;</span><span class="sym">);</span>
+<span class="line">   45 </span>
+<span class="line">   46 </span>	btn <span class="sym">=</span> <span class="kwd">button_widget_create</span><span class="sym">(</span> cw<span class="sym">,</span> <span class="kwd">lt_bounds</span><span class="sym">(</span> lt<span class="sym">,</span> <span class="str">&quot;lr&quot;</span> <span class="sym">),</span> <span class="num">0</span> <span class="sym">);</span>
+<span class="line">   47 </span>	<span class="kwd">button_set_text</span><span class="sym">(</span>btn<span class="sym">,</span> <span class="str">&quot;B-L-R&quot;</span><span class="sym">);</span>
+<span class="line">   48 </span>
+<span class="line">   49 </span>	<span class="kwd">window_show</span><span class="sym">(</span> w <span class="sym">);</span>
+<span class="line">   50 </span>	<span class="kwd">window_focus</span><span class="sym">(</span> w <span class="sym">);</span>
+<span class="line">   51 </span>
+<span class="line">   52 </span>	<span class="kwd">block_heap_loginfo</span><span class="sym">( );</span>
+<span class="line">   53 </span>
+<span class="line">   54 </span>	<span class="kwd">claro_loop</span><span class="sym">( );</span>
+<span class="line">   55 </span>
+<span class="line">   56 </span>	<span class="kwa">return</span> <span class="num">0</span><span class="sym">;</span>
+<span class="line">   57 </span><span class="sym">}</span>
+</pre>
+</body>
+</html>
+<!--HTML generated by highlight 2.3-4 beta, http://www.andre-simon.de/-->

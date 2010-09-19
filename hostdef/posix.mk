@@ -1,0 +1,2 @@
+
+CFLAGS=-fPIC -DPIC

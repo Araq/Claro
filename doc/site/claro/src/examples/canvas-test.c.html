@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<title>examples/canvas/canvas-test.c</title>
+<link rel="stylesheet" type="text/css" href="highlight.css">
+</head>
+<body class="hl">
+<pre class="hl"><span class="line">    1 </span><span class="dir">#include &lt;claro/base.h&gt;</span>
+<span class="line">    2 </span><span class="dir">#include &lt;claro/graphics.h&gt;</span>
+<span class="line">    3 </span><span class="dir">#include &lt;math.h&gt;</span>
+<span class="line">    4 </span>
+<span class="line">    5 </span>widget_t <span class="sym">*</span>c<span class="sym">;</span>
+<span class="line">    6 </span><span class="kwb">int</span> red<span class="sym">,</span> blue<span class="sym">,</span> green <span class="sym">=</span> <span class="num">0</span><span class="sym">;</span>
+<span class="line">    7 </span>
+<span class="line">    8 </span><span class="kwb">void</span> <span class="kwd">handle_main</span><span class="sym">(</span> object_t <span class="sym">*</span>obj<span class="sym">,</span> event_t <span class="sym">*</span>event <span class="sym">)</span>
+<span class="line">    9 </span><span class="sym">{</span>
+<span class="line">   10 </span>	<span class="kwb">static int</span> last_update <span class="sym">=</span> <span class="num">0</span><span class="sym">;</span>
+<span class="line">   11 </span>	<span class="kwb">int</span> t<span class="sym">;</span>
+<span class="line">   12 </span>
+<span class="line">   13 </span>	t <span class="sym">=</span> <span class="kwd">time</span><span class="sym">(</span> <span class="num">0</span> <span class="sym">);</span>
+<span class="line">   14 </span>
+<span class="line">   15 </span>	<span class="kwa">if</span> <span class="sym">(</span> t <span class="sym">&gt;</span> last_update <span class="sym">)</span>
+<span class="line">   16 </span>	<span class="sym">{</span>
+<span class="line">   17 </span>		<span class="kwd">canvas_redraw</span><span class="sym">(</span> c <span class="sym">);</span>
+<span class="line">   18 </span>		last_update <span class="sym">=</span> t<span class="sym">;</span>
+<span class="line">   19 </span>	<span class="sym">}</span>
+<span class="line">   20 </span><span class="sym">}</span>
+<span class="line">   21 </span>
+<span class="line">   22 </span>
+<span class="line">   23 </span><span class="kwb">void</span> <span class="kwd">red_clicked</span><span class="sym">(</span> object_t <span class="sym">*</span>btn<span class="sym">,</span> event_t <span class="sym">*</span>event <span class="sym">) {</span>
+<span class="line">   24 </span>    red <span class="sym">= !</span>red<span class="sym">;</span>
+<span class="line">   25 </span>
+<span class="line">   26 </span>    <span class="kwa">if</span><span class="sym">(</span>red<span class="sym">) {</span>
+<span class="line">   27 </span>        <span class="kwd">button_set_text</span><span class="sym">(</span>btn<span class="sym">,</span> <span class="str">&quot;Red On&quot;</span><span class="sym">);</span>
+<span class="line">   28 </span>    <span class="sym">}</span> <span class="kwa">else</span> <span class="sym">{</span>
+<span class="line">   29 </span>        <span class="kwd">button_set_text</span><span class="sym">(</span>btn<span class="sym">,</span> <span class="str">&quot;Red Off&quot;</span><span class="sym">);</span>
+<span class="line">   30 </span>    <span class="sym">}</span>
+<span class="line">   31 </span>
+<span class="line">   32 </span>    <span class="kwd">canvas_redraw</span><span class="sym">(</span> c <span class="sym">);</span>
+<span class="line">   33 </span><span class="sym">}</span>
+<span class="line">   34 </span>
+<span class="line">   35 </span>
+<span class="line">   36 </span><span class="kwb">void</span> <span class="kwd">blue_clicked</span><span class="sym">(</span> object_t <span class="sym">*</span>btn<span class="sym">,</span> event_t <span class="sym">*</span>event <span class="sym">) {</span>
+<span class="line">   37 </span>    blue <span class="sym">= !</span>blue<span class="sym">;</span>
+<span class="line">   38 </span>    <span class="kwa">if</span><span class="sym">(</span>blue<span class="sym">) {</span>
+<span class="line">   39 </span>        <span class="kwd">button_set_text</span><span class="sym">(</span>btn<span class="sym">,</span> <span class="str">&quot;Blue On&quot;</span><span class="sym">);</span>
+<span class="line">   40 </span>    <span class="sym">}</span> <span class="kwa">else</span> <span class="sym">{</span>
+<span class="line">   41 </span>        <span class="kwd">button_set_text</span><span class="sym">(</span>btn<span class="sym">,</span> <span class="str">&quot;Blue Off&quot;</span><span class="sym">);</span>
+<span class="line">   42 </span>    <span class="sym">}</span>
+<span class="line">   43 </span>
+<span class="line">   44 </span>    <span class="kwd">canvas_redraw</span><span class="sym">(</span> c <span class="sym">);</span>
+<span class="line">   45 </span><span class="sym">}</span>
+<span class="line">   46 </span>
+<span class="line">   47 </span>
+<span class="line">   48 </span><span class="kwb">void</span> <span class="kwd">green_clicked</span><span class="sym">(</span> object_t <span class="sym">*</span>btn<span class="sym">,</span> event_t <span class="sym">*</span>event <span class="sym">) {</span>
+<span class="line">   49 </span>    green <span class="sym">= !</span>green<span class="sym">;</span>
+<span class="line">   50 </span>
+<span class="line">   51 </span>    <span class="kwa">if</span><span class="sym">(</span>green<span class="sym">) {</span>
+<span class="line">   52 </span>        <span class="kwd">button_set_text</span><span class="sym">(</span>btn<span class="sym">,</span> <span class="str">&quot;Green On&quot;</span><span class="sym">);</span>
+<span class="line">   53 </span>    <span class="sym">}</span> <span class="kwa">else</span> <span class="sym">{</span>
+<span class="line">   54 </span>        <span class="kwd">button_set_text</span><span class="sym">(</span>btn<span class="sym">,</span> <span class="str">&quot;Green Off&quot;</span><span class="sym">);</span>
+<span class="line">   55 </span>    <span class="sym">}</span>
+<span class="line">   56 </span>
+<span class="line">   57 </span>    <span class="kwd">canvas_redraw</span><span class="sym">(</span> c <span class="sym">);</span>
+<span class="line">   58 </span><span class="sym">}</span>
+<span class="line">   59 </span>
+<span class="line">   60 </span>
+<span class="line">   61 </span><span class="kwb">void</span> <span class="kwd">handle_redraw</span><span class="sym">(</span> object_t <span class="sym">*</span>obj<span class="sym">,</span> event_t <span class="sym">*</span>event <span class="sym">)</span>
+<span class="line">   62 </span><span class="sym">{</span>
+<span class="line">   63 </span>	<span class="com">/* this code was borrowed from cairoclock.tar.gz, can't remember</span>
+<span class="line">   64 </span><span class="com">	 * the site it came from: Google it for the original (gtkmm) source */</span>
+<span class="line">   65 </span>
+<span class="line">   66 </span>	canvas_widget_t <span class="sym">*</span>cvsw <span class="sym">= (</span>canvas_widget_t <span class="sym">*)</span>obj<span class="sym">;</span>
+<span class="line">   67 </span>	cairo_t <span class="sym">*</span>cr <span class="sym">=</span> cvsw<span class="sym">-&gt;</span>cr<span class="sym">;</span>
+<span class="line">   68 </span>
+<span class="line">   69 </span>	<span class="kwd">cairo_scale</span><span class="sym">(</span> cr<span class="sym">,</span> cvsw<span class="sym">-&gt;</span>widget<span class="sym">.</span>size_req<span class="sym">-&gt;</span>w<span class="sym">,</span> cvsw<span class="sym">-&gt;</span>widget<span class="sym">.</span>size_req<span class="sym">-&gt;</span>h <span class="sym">);</span>
+<span class="line">   70 </span>
+<span class="line">   71 </span>	<span class="slc">// store the current time</span>
+<span class="line">   72 </span>	<span class="kwb">time_t</span> rawtime<span class="sym">;</span>
+<span class="line">   73 </span>	<span class="kwd">time</span><span class="sym">(&amp;</span>rawtime<span class="sym">);</span>
+<span class="line">   74 </span>	<span class="kwb">struct</span> tm <span class="sym">*</span> timeinfo <span class="sym">=</span> <span class="kwd">localtime</span> <span class="sym">(&amp;</span>rawtime<span class="sym">);</span>
+<span class="line">   75 </span>
+<span class="line">   76 </span>	<span class="slc">// compute the angles of the indicators of our clock</span>
+<span class="line">   77 </span>	<span class="kwb">double</span> minutes <span class="sym">=</span> timeinfo<span class="sym">-&gt;</span>tm_min <span class="sym">*</span> M_PI <span class="sym">/</span> <span class="num">30</span><span class="sym">;</span>
+<span class="line">   78 </span>	<span class="kwb">double</span> hours <span class="sym">=</span> timeinfo<span class="sym">-&gt;</span>tm_hour <span class="sym">*</span> M_PI <span class="sym">/</span> <span class="num">6</span><span class="sym">;</span>
+<span class="line">   79 </span>	<span class="kwb">double</span> seconds<span class="sym">=</span> timeinfo<span class="sym">-&gt;</span>tm_sec <span class="sym">*</span> M_PI <span class="sym">/</span> <span class="num">30</span><span class="sym">;</span>
+<span class="line">   80 </span>
+<span class="line">   81 </span>	<span class="slc">// who doesn't want all those nice line settings :)</span>
+<span class="line">   82 </span>	<span class="kwd">cairo_set_line_cap</span><span class="sym">(</span> cr<span class="sym">,</span> CAIRO_LINE_CAP_ROUND <span class="sym">);</span>
+<span class="line">   83 </span>	<span class="kwd">cairo_set_line_width</span><span class="sym">(</span> cr<span class="sym">,</span> <span class="num">0.1</span> <span class="sym">);</span>
+<span class="line">   84 </span>
+<span class="line">   85 </span>	<span class="slc">// translate to the center of the rendering context and draw a black clock outline</span>
+<span class="line">   86 </span>	<span class="kwd">cairo_set_source_rgba</span><span class="sym">(</span> cr<span class="sym">,</span> red<span class="sym">,</span> green<span class="sym">,</span> blue<span class="sym">,</span> <span class="num">1</span> <span class="sym">);</span>
+<span class="line">   87 </span>	<span class="kwd">cairo_translate</span><span class="sym">(</span> cr<span class="sym">,</span> <span class="num">0.5</span><span class="sym">,</span> <span class="num">0.5</span> <span class="sym">);</span>
+<span class="line">   88 </span>	<span class="kwd">cairo_arc</span><span class="sym">(</span> cr<span class="sym">,</span> <span class="num">0</span><span class="sym">,</span> <span class="num">0</span><span class="sym">,</span> <span class="num">0.4</span><span class="sym">,</span> <span class="num">0</span><span class="sym">,</span> M_PI <span class="sym">*</span> <span class="num">2</span> <span class="sym">);</span>
+<span class="line">   89 </span>	<span class="kwd">cairo_stroke</span><span class="sym">(</span> cr <span class="sym">);</span>
+<span class="line">   90 </span>
+<span class="line">   91 </span>	<span class="slc">// draw a white dot on the current second.</span>
+<span class="line">   92 </span>	<span class="kwd">cairo_set_source_rgba</span><span class="sym">(</span> cr<span class="sym">,</span> <span class="num">1</span><span class="sym">,</span> <span class="num">1</span><span class="sym">,</span> <span class="num">1</span><span class="sym">,</span> <span class="num">0.6</span> <span class="sym">);</span>
+<span class="line">   93 </span>	<span class="kwd">cairo_arc</span><span class="sym">(</span> cr<span class="sym">,</span> <span class="kwd">sin</span><span class="sym">(</span>seconds<span class="sym">) *</span> <span class="num">0.4</span><span class="sym">, -</span><span class="kwd">cos</span><span class="sym">(</span>seconds<span class="sym">) *</span> <span class="num">0.4</span><span class="sym">,</span> <span class="num">0.05</span><span class="sym">,</span> <span class="num">0</span><span class="sym">,</span> M_PI <span class="sym">*</span> <span class="num">2</span> <span class="sym">);</span>
+<span class="line">   94 </span>	<span class="kwd">cairo_fill</span><span class="sym">(</span> cr <span class="sym">);</span>
+<span class="line">   95 </span>
+<span class="line">   96 </span>	<span class="slc">// draw the minutes wijzer</span>
+<span class="line">   97 </span>	<span class="kwd">cairo_set_source_rgba</span><span class="sym">(</span> cr<span class="sym">,</span> <span class="num">0.2</span><span class="sym">,</span> <span class="num">0.2</span><span class="sym">,</span> <span class="num">1</span><span class="sym">,</span> <span class="num">0.6</span> <span class="sym">);</span>
+<span class="line">   98 </span>	<span class="kwd">cairo_move_to</span><span class="sym">(</span> cr<span class="sym">,</span> <span class="num">0</span><span class="sym">,</span> <span class="num">0</span> <span class="sym">);</span>
+<span class="line">   99 </span>	<span class="kwd">cairo_line_to</span><span class="sym">(</span> cr<span class="sym">,</span> <span class="kwd">sin</span><span class="sym">(</span>minutes<span class="sym">) *</span> <span class="num">0.4</span><span class="sym">, -</span><span class="kwd">cos</span><span class="sym">(</span>minutes<span class="sym">) *</span> <span class="num">0.4</span> <span class="sym">);</span>
+<span class="line">  100 </span>	<span class="kwd">cairo_stroke</span><span class="sym">(</span> cr <span class="sym">);</span>
+<span class="line">  101 </span>
+<span class="line">  102 </span>	<span class="slc">// draw the hours wijzer</span>
+<span class="line">  103 </span>	<span class="kwd">cairo_move_to</span><span class="sym">(</span> cr<span class="sym">,</span> <span class="num">0</span><span class="sym">,</span> <span class="num">0</span> <span class="sym">);</span>
+<span class="line">  104 </span>	<span class="kwd">cairo_line_to</span><span class="sym">(</span> cr<span class="sym">,</span> <span class="kwd">sin</span><span class="sym">(</span>hours<span class="sym">) *</span> <span class="num">0.2</span><span class="sym">, -</span><span class="kwd">cos</span><span class="sym">(</span>hours<span class="sym">) *</span> <span class="num">0.2</span> <span class="sym">);</span>
+<span class="line">  105 </span>	<span class="kwd">cairo_stroke</span><span class="sym">(</span> cr <span class="sym">);</span>
+<span class="line">  106 </span><span class="sym">}</span>
+<span class="line">  107 </span>
+<span class="line">  108 </span><span class="kwb">int</span> <span class="kwd">main</span><span class="sym">(</span> <span class="kwb">int</span> argc<span class="sym">,</span> <span class="kwb">char</span> <span class="sym">*</span>argv<span class="sym">[] )</span>
+<span class="line">  109 </span><span class="sym">{</span>
+<span class="line">  110 </span>	object_t <span class="sym">*</span>w<span class="sym">;</span>
+<span class="line">  111 </span>	layout_t <span class="sym">*</span>lt<span class="sym">;</span>
+<span class="line">  112 </span>    object_t <span class="sym">*</span>btn <span class="sym">=</span> NULL<span class="sym">;</span>
+<span class="line">  113 </span>	bounds_t b <span class="sym">= {</span> <span class="num">50</span><span class="sym">,</span> <span class="num">50</span><span class="sym">,</span> <span class="num">220</span><span class="sym">,</span> <span class="num">220</span> <span class="sym">};</span>
+<span class="line">  114 </span>
+<span class="line">  115 </span>	<span class="kwd">claro_base_init</span><span class="sym">( );</span>
+<span class="line">  116 </span>	<span class="kwd">claro_graphics_init</span><span class="sym">( );</span>
+<span class="line">  117 </span>
+<span class="line">  118 </span>	<span class="kwd">log_fd_set_level</span><span class="sym">(</span> CL_DEBUG<span class="sym">,</span> stderr <span class="sym">);</span>
+<span class="line">  119 </span>
+<span class="line">  120 </span>	<span class="kwd">clog</span><span class="sym">(</span> CL_INFO<span class="sym">,</span> <span class="str">&quot;%s running using Claro!&quot;</span><span class="sym">,</span> __FILE__ <span class="sym">);</span>
+<span class="line">  121 </span>
+<span class="line">  122 </span>	lt <span class="sym">=</span> <span class="kwd">layout_create</span><span class="sym">(</span> <span class="str">&quot;[][_&lt;a|clock|&lt;a][{40}Red|Green|Blue]&quot;</span><span class="sym">,</span> b<span class="sym">,</span> <span class="num">10</span><span class="sym">,</span> <span class="num">10</span> <span class="sym">);</span>
+<span class="line">  123 </span>
+<span class="line">  124 </span>        w <span class="sym">=</span> <span class="kwd">window_widget_create_with_layout</span><span class="sym">(</span>NULL<span class="sym">,</span> lt<span class="sym">,</span> <span class="str">&quot;Canvas Clock&quot;</span><span class="sym">,</span> <span class="num">0</span><span class="sym">);</span>
+<span class="line">  125 </span>
+<span class="line">  126 </span>	c <span class="sym">=</span> <span class="kwd">canvas_widget_create</span><span class="sym">(</span> w<span class="sym">,</span> <span class="kwd">lt_bounds</span><span class="sym">(</span>lt<span class="sym">,</span> <span class="str">&quot;clock&quot;</span><span class="sym">),</span> <span class="num">0</span> <span class="sym">);</span>
+<span class="line">  127 </span>
+<span class="line">  128 </span>	<span class="kwd">object_addhandler</span><span class="sym">(</span> c<span class="sym">,</span> <span class="str">&quot;redraw&quot;</span><span class="sym">,</span> handle_redraw <span class="sym">);</span>
+<span class="line">  129 </span>
+<span class="line">  130 </span>        btn <span class="sym">=</span> <span class="kwd">button_widget_create</span><span class="sym">(</span> w<span class="sym">,</span> <span class="kwd">lt_bounds</span><span class="sym">(</span>lt<span class="sym">,</span> <span class="str">&quot;Red&quot;</span><span class="sym">),</span> <span class="num">0</span> <span class="sym">);</span>
+<span class="line">  131 </span>        <span class="kwd">button_set_text</span><span class="sym">(</span>btn<span class="sym">,</span> <span class="str">&quot;Red Off&quot;</span><span class="sym">);</span>
+<span class="line">  132 </span>        <span class="kwd">object_addhandler</span><span class="sym">(</span>btn<span class="sym">,</span> <span class="str">&quot;pushed&quot;</span><span class="sym">,</span> red_clicked <span class="sym">);</span>
+<span class="line">  133 </span>
+<span class="line">  134 </span>        btn <span class="sym">=</span> <span class="kwd">button_widget_create</span><span class="sym">(</span> w<span class="sym">,</span> <span class="kwd">lt_bounds</span><span class="sym">(</span>lt<span class="sym">,</span> <span class="str">&quot;Green&quot;</span><span class="sym">),</span> <span class="num">0</span> <span class="sym">);</span>
+<span class="line">  135 </span>        <span class="kwd">button_set_text</span><span class="sym">(</span>btn<span class="sym">,</span> <span class="str">&quot;Green Off&quot;</span><span class="sym">);</span>
+<span class="line">  136 </span>        <span class="kwd">object_addhandler</span><span class="sym">(</span>btn<span class="sym">,</span> <span class="str">&quot;pushed&quot;</span><span class="sym">,</span> green_clicked <span class="sym">);</span>
+<span class="line">  137 </span>
+<span class="line">  138 </span>        btn <span class="sym">=</span> <span class="kwd">button_widget_create</span><span class="sym">(</span> w<span class="sym">,</span> <span class="kwd">lt_bounds</span><span class="sym">(</span>lt<span class="sym">,</span> <span class="str">&quot;Blue&quot;</span><span class="sym">),</span> <span class="num">0</span> <span class="sym">);</span>
+<span class="line">  139 </span>        <span class="kwd">button_set_text</span><span class="sym">(</span>btn<span class="sym">,</span> <span class="str">&quot;Blue Off&quot;</span><span class="sym">);</span>
+<span class="line">  140 </span>        <span class="kwd">object_addhandler</span><span class="sym">(</span>btn<span class="sym">,</span> <span class="str">&quot;pushed&quot;</span><span class="sym">,</span> blue_clicked <span class="sym">);</span>
+<span class="line">  141 </span>
+<span class="line">  142 </span>
+<span class="line">  143 </span>	<span class="kwd">window_show</span><span class="sym">(</span> w <span class="sym">);</span>
+<span class="line">  144 </span>	<span class="kwd">window_focus</span><span class="sym">(</span> w <span class="sym">);</span>
+<span class="line">  145 </span>
+<span class="line">  146 </span>	<span class="kwd">block_heap_loginfo</span><span class="sym">( );</span>
+<span class="line">  147 </span>
+<span class="line">  148 </span>	<span class="com">/* add our main loop */</span>
+<span class="line">  149 </span>	<span class="kwd">object_addhandler</span><span class="sym">(</span> claro<span class="sym">,</span> <span class="str">&quot;mainloop&quot;</span><span class="sym">,</span> handle_main <span class="sym">);</span>
+<span class="line">  150 </span>
+<span class="line">  151 </span>	<span class="kwd">claro_loop</span><span class="sym">( );</span>
+<span class="line">  152 </span>
+<span class="line">  153 </span>	<span class="kwa">return</span> <span class="num">0</span><span class="sym">;</span>
+<span class="line">  154 </span><span class="sym">}</span>
+</pre>
+</body>
+</html>
+<!--HTML generated by highlight 2.3-4 beta, http://www.andre-simon.de/-->

@@ -1,0 +1,17 @@
+---
+title: "Why?"
+inMenu: true
+directoryName: Start
+---
+h2. Why?
+
+C'mon, do you really like writing reams of C++ code or a billion CSS tags
+just to get that button to be in *just* the right position?  Neither do we.
+That's why Claro Graphics has LEL.  We also feel that there's really no decent 
+C GUI library that is simple and uses native widgets.  All the other C
+libraries are either kitchen sinks or are dead (or are dead ugly).
+
+For us, Claro is a tool we're writing so we can write other applications
+more easily.  Some of us write networking programs, others just like to 
+have fun.  Either way, Claro is intended to make the coding of applications
+easier.

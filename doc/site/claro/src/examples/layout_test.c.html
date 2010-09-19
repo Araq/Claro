@@ -1,0 +1,70 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<title>examples/layout/layout_test.c</title>
+<link rel="stylesheet" type="text/css" href="highlight.css">
+</head>
+<body class="hl">
+<pre class="hl"><span class="line">    1 </span><span class="dir">#include &lt;claro/base.h&gt;</span>
+<span class="line">    2 </span><span class="dir">#include &lt;claro/graphics.h&gt;</span>
+<span class="line">    3 </span><span class="dir">#include &lt;assert.h&gt;</span>
+<span class="line">    4 </span>
+<span class="line">    5 </span>object_t <span class="sym">*</span>window<span class="sym">, *</span>input<span class="sym">, *</span>chat<span class="sym">, *</span>send_btn<span class="sym">;</span>
+<span class="line">    6 </span>layout_t <span class="sym">*</span>lt<span class="sym">;</span>
+<span class="line">    7 </span>
+<span class="line">    8 </span><span class="kwb">void</span> <span class="kwd">push_my_button</span><span class="sym">(</span> object_t <span class="sym">*</span>obj<span class="sym">,</span> event_t <span class="sym">*</span>event <span class="sym">)</span>
+<span class="line">    9 </span><span class="sym">{</span>
+<span class="line">   10 </span><span class="sym">}</span>
+<span class="line">   11 </span>
+<span class="line">   12 </span>
+<span class="line">   13 </span><span class="kwb">int</span> <span class="kwd">main</span><span class="sym">(</span> <span class="kwb">int</span> argc<span class="sym">,</span> <span class="kwb">char</span> <span class="sym">*</span>argv<span class="sym">[] )</span>
+<span class="line">   14 </span><span class="sym">{</span>
+<span class="line">   15 </span>    bounds_t b <span class="sym">= {</span> <span class="num">50</span><span class="sym">,</span> <span class="num">50</span><span class="sym">,</span> <span class="num">400</span><span class="sym">,</span> <span class="num">500</span> <span class="sym">};</span>
+<span class="line">   16 </span>
+<span class="line">   17 </span>    <span class="kwa">if</span><span class="sym">(</span>argc <span class="sym">!=</span> <span class="num">2</span><span class="sym">) {</span>
+<span class="line">   18 </span>        <span class="kwd">printf</span><span class="sym">(</span><span class="str">&quot;usage:  myapp layout</span><span class="esc">\n</span><span class="str">&quot;</span><span class="sym">);</span>
+<span class="line">   19 </span>        <span class="kwd">printf</span><span class="sym">(</span><span class="str">&quot;Must have textbox, send, input cells</span><span class="esc">\n</span><span class="str">&quot;</span><span class="sym">);</span>
+<span class="line">   20 </span>        <span class="kwa">return</span> <span class="num">1</span><span class="sym">;</span>
+<span class="line">   21 </span>    <span class="sym">}</span>
+<span class="line">   22 </span>
+<span class="line">   23 </span>    <span class="kwd">claro_base_init</span><span class="sym">( );</span>
+<span class="line">   24 </span>    <span class="kwd">claro_graphics_init</span><span class="sym">( );</span>
+<span class="line">   25 </span>
+<span class="line">   26 </span>    <span class="kwd">log_fd_set_level</span><span class="sym">(</span> CL_DEBUG<span class="sym">,</span> stderr <span class="sym">);</span>
+<span class="line">   27 </span>
+<span class="line">   28 </span>
+<span class="line">   29 </span>    <span class="kwd">clog</span><span class="sym">(</span> CL_INFO<span class="sym">,</span> <span class="str">&quot;%s running using Claro!&quot;</span><span class="sym">,</span> __FILE__ <span class="sym">);</span>
+<span class="line">   30 </span>
+<span class="line">   31 </span>    lt <span class="sym">=</span> <span class="kwd">layout_create</span><span class="sym">(</span>argv<span class="sym">[</span><span class="num">1</span><span class="sym">],</span> b<span class="sym">,</span> <span class="num">30</span><span class="sym">,</span> <span class="num">40</span><span class="sym">);</span>
+<span class="line">   32 </span>    <span class="kwd">assert</span><span class="sym">(</span>lt <span class="sym">!=</span> NULL <span class="sym">&amp;&amp;</span> <span class="str">&quot;failed to parse layout specification&quot;</span><span class="sym">);</span>
+<span class="line">   33 </span>
+<span class="line">   34 </span>    window <span class="sym">=</span> <span class="kwd">window_widget_create_with_layout</span><span class="sym">(</span>NULL<span class="sym">,</span> lt<span class="sym">,</span> <span class="str">&quot;My Simple Application&quot;</span><span class="sym">,</span> <span class="num">0</span><span class="sym">);</span>
+<span class="line">   35 </span>
+<span class="line">   36 </span>    chat <span class="sym">=</span> <span class="kwd">textbox_widget_create</span><span class="sym">(</span>window<span class="sym">,</span> <span class="kwd">lt_bounds</span><span class="sym">(</span>lt<span class="sym">,</span> <span class="str">&quot;textbox&quot;</span><span class="sym">),</span> <span class="num">0</span> <span class="sym">);</span>
+<span class="line">   37 </span>    <span class="kwd">widget_set_notify</span><span class="sym">(</span> <span class="kwd">WIDGET</span><span class="sym">(</span>chat<span class="sym">),</span> cNotifyKey <span class="sym">);</span>
+<span class="line">   38 </span>    <span class="kwd">textbox_set_text</span><span class="sym">(</span> chat<span class="sym">,</span> <span class="str">&quot;&gt; Welcome.&quot;</span> <span class="sym">);</span>
+<span class="line">   39 </span>
+<span class="line">   40 </span>    send_btn <span class="sym">=</span> <span class="kwd">button_widget_create</span><span class="sym">(</span> window<span class="sym">,</span> <span class="kwd">lt_bounds</span><span class="sym">(</span>lt<span class="sym">,</span> <span class="str">&quot;send&quot;</span><span class="sym">),</span> <span class="num">0</span> <span class="sym">);</span>
+<span class="line">   41 </span>    <span class="kwd">button_set_text</span><span class="sym">(</span>send_btn<span class="sym">,</span> <span class="str">&quot;Send&quot;</span> <span class="sym">);</span>
+<span class="line">   42 </span>
+<span class="line">   43 </span>    <span class="kwd">object_addhandler</span><span class="sym">(</span>send_btn<span class="sym">,</span> <span class="str">&quot;pushed&quot;</span><span class="sym">,</span> push_my_button <span class="sym">);</span>
+<span class="line">   44 </span>
+<span class="line">   45 </span>    input <span class="sym">=</span> <span class="kwd">textbox_widget_create</span><span class="sym">(</span>window<span class="sym">,</span> <span class="kwd">lt_bounds</span><span class="sym">(</span>lt<span class="sym">,</span> <span class="str">&quot;input&quot;</span><span class="sym">),</span> <span class="num">0</span><span class="sym">);</span>
+<span class="line">   46 </span>    <span class="kwd">widget_set_notify</span><span class="sym">(</span> <span class="kwd">WIDGET</span><span class="sym">(</span>input<span class="sym">),</span> cNotifyKey <span class="sym">);</span>
+<span class="line">   47 </span>
+<span class="line">   48 </span>    <span class="kwd">window_show</span><span class="sym">(</span> window <span class="sym">);</span>
+<span class="line">   49 </span>    <span class="kwd">window_focus</span><span class="sym">(</span> window <span class="sym">);</span>
+<span class="line">   50 </span>
+<span class="line">   51 </span>    <span class="kwd">block_heap_loginfo</span><span class="sym">( );</span>
+<span class="line">   52 </span>
+<span class="line">   53 </span>    <span class="kwd">claro_loop</span><span class="sym">( );</span>
+<span class="line">   54 </span>
+<span class="line">   55 </span>    <span class="kwd">layout_destroy</span><span class="sym">(</span>lt<span class="sym">);</span>
+<span class="line">   56 </span>
+<span class="line">   57 </span>    <span class="kwa">return</span> <span class="num">0</span><span class="sym">;</span>
+<span class="line">   58 </span><span class="sym">}</span>
+</pre>
+</body>
+</html>
+<!--HTML generated by highlight 2.3-4 beta, http://www.andre-simon.de/-->

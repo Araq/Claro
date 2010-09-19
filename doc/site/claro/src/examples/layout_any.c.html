@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<title>examples/layout/layout_any.c</title>
+<link rel="stylesheet" type="text/css" href="highlight.css">
+</head>
+<body class="hl">
+<pre class="hl"><span class="line">    1 </span><span class="dir">#include &lt;claro/base.h&gt;</span>
+<span class="line">    2 </span><span class="dir">#include &lt;claro/graphics.h&gt;</span>
+<span class="line">    3 </span><span class="dir">#include &lt;assert.h&gt;</span>
+<span class="line">    4 </span>
+<span class="line">    5 </span>object_t <span class="sym">*</span>window<span class="sym">, *</span>wgt<span class="sym">;</span>
+<span class="line">    6 </span>layout_t <span class="sym">*</span>lt <span class="sym">=</span> NULL<span class="sym">;</span>
+<span class="line">    7 </span>
+<span class="line">    8 </span>
+<span class="line">    9 </span>
+<span class="line">   10 </span><span class="kwb">int</span> <span class="kwd">main</span><span class="sym">(</span> <span class="kwb">int</span> argc<span class="sym">,</span> <span class="kwb">char</span> <span class="sym">*</span>argv<span class="sym">[] )</span>
+<span class="line">   11 </span><span class="sym">{</span>
+<span class="line">   12 </span>    <span class="kwb">size_t</span> i <span class="sym">=</span> <span class="num">0</span><span class="sym">;</span>
+<span class="line">   13 </span>    <span class="kwb">size_t</span> size <span class="sym">=</span> <span class="num">0</span><span class="sym">;</span>
+<span class="line">   14 </span>    cell_t <span class="sym">**</span>cl <span class="sym">=</span> NULL<span class="sym">;</span>
+<span class="line">   15 </span>    <span class="kwb">int</span> min_w<span class="sym">,</span> min_h<span class="sym">;</span>
+<span class="line">   16 </span>    bounds_t b <span class="sym">= {</span> <span class="num">50</span><span class="sym">,</span> <span class="num">50</span><span class="sym">,</span> <span class="num">0</span><span class="sym">,</span> <span class="num">0</span> <span class="sym">};</span>
+<span class="line">   17 </span>
+<span class="line">   18 </span>    <span class="kwa">if</span><span class="sym">(</span>argc <span class="sym">!=</span> <span class="num">6</span><span class="sym">) {</span>
+<span class="line">   19 </span>        <span class="kwd">printf</span><span class="sym">(</span><span class="str">&quot;usage:  layout_any w h min_w min_h layout</span><span class="esc">\n</span><span class="str">layout can be anything and will be rendered with lots of buttons&quot;</span><span class="sym">);</span>
+<span class="line">   20 </span>        <span class="kwa">return</span> <span class="num">1</span><span class="sym">;</span>
+<span class="line">   21 </span>    <span class="sym">}</span>
+<span class="line">   22 </span>
+<span class="line">   23 </span>    b<span class="sym">.</span>w <span class="sym">=</span> <span class="kwd">atoi</span><span class="sym">(</span>argv<span class="sym">[</span><span class="num">1</span><span class="sym">]);</span>
+<span class="line">   24 </span>    b<span class="sym">.</span>h <span class="sym">=</span> <span class="kwd">atoi</span><span class="sym">(</span>argv<span class="sym">[</span><span class="num">2</span><span class="sym">]);</span>
+<span class="line">   25 </span>    min_w <span class="sym">=</span> <span class="kwd">atoi</span><span class="sym">(</span>argv<span class="sym">[</span><span class="num">3</span><span class="sym">]);</span>
+<span class="line">   26 </span>    min_h <span class="sym">=</span> <span class="kwd">atoi</span><span class="sym">(</span>argv<span class="sym">[</span><span class="num">4</span><span class="sym">]);</span>
+<span class="line">   27 </span>
+<span class="line">   28 </span>    <span class="kwd">printf</span><span class="sym">(</span><span class="str">&quot;w: %d, h: %d, min_w: %d, min_h: %d</span><span class="esc">\n</span><span class="str">&quot;</span><span class="sym">,</span> b<span class="sym">.</span>w<span class="sym">,</span> b<span class="sym">.</span>h<span class="sym">,</span> min_w<span class="sym">,</span> min_h<span class="sym">);</span>
+<span class="line">   29 </span>
+<span class="line">   30 </span>    <span class="kwd">claro_base_init</span><span class="sym">( );</span>
+<span class="line">   31 </span>    <span class="kwd">claro_graphics_init</span><span class="sym">( );</span>
+<span class="line">   32 </span>
+<span class="line">   33 </span>    <span class="kwd">log_fd_set_level</span><span class="sym">(</span> CL_DEBUG<span class="sym">,</span> stderr <span class="sym">);</span>
+<span class="line">   34 </span>
+<span class="line">   35 </span>
+<span class="line">   36 </span>    <span class="kwd">clog</span><span class="sym">(</span> CL_INFO<span class="sym">,</span> <span class="str">&quot;%s running using Claro!&quot;</span><span class="sym">,</span> __FILE__ <span class="sym">);</span>
+<span class="line">   37 </span>
+<span class="line">   38 </span>    lt <span class="sym">=</span> <span class="kwd">layout_create</span><span class="sym">(</span>argv<span class="sym">[</span><span class="num">5</span><span class="sym">],</span> b<span class="sym">,</span> min_w<span class="sym">,</span> min_h<span class="sym">);</span>
+<span class="line">   39 </span>
+<span class="line">   40 </span>    <span class="kwa">if</span><span class="sym">(!</span>lt<span class="sym">) {</span>
+<span class="line">   41 </span>        <span class="kwd">printf</span><span class="sym">(</span><span class="str">&quot;- error parsing</span><span class="esc">\n</span><span class="str">&quot;</span><span class="sym">);</span>
+<span class="line">   42 </span>        <span class="kwa">return</span> <span class="num">1</span><span class="sym">;</span>
+<span class="line">   43 </span>    <span class="sym">}</span>
+<span class="line">   44 </span>
+<span class="line">   45 </span>    <span class="kwd">layout_dump</span><span class="sym">(</span>lt<span class="sym">);</span>
+<span class="line">   46 </span>
+<span class="line">   47 </span>    window <span class="sym">=</span> <span class="kwd">window_widget_create_with_layout</span><span class="sym">(</span>NULL<span class="sym">,</span> lt<span class="sym">,</span> <span class="str">&quot;Layout Anything&quot;</span><span class="sym">,</span> <span class="num">0</span><span class="sym">);</span>
+<span class="line">   48 </span>
+<span class="line">   49 </span>    <span class="kwa">for</span><span class="sym">(</span>i <span class="sym">=</span> <span class="num">0</span><span class="sym">,</span> cl <span class="sym">=</span> <span class="kwd">layout_in_order</span><span class="sym">(</span>lt<span class="sym">, &amp;</span>size<span class="sym">);</span> i <span class="sym">&lt;</span> size<span class="sym">;</span> i<span class="sym">++) {</span>
+<span class="line">   50 </span>        <span class="kwa">if</span><span class="sym">(</span><span class="kwd">strlen</span><span class="sym">(</span>cl<span class="sym">[</span>i<span class="sym">]-&gt;</span>name<span class="sym">) &gt;</span> <span class="num">0</span><span class="sym">) {</span>
+<span class="line">   51 </span>            <span class="kwa">if</span><span class="sym">(</span>cl<span class="sym">[</span>i<span class="sym">]-&gt;</span>name<span class="sym">[</span><span class="num">0</span><span class="sym">] ==</span> <span class="str">'t'</span><span class="sym">) {</span>
+<span class="line">   52 </span>                wgt <span class="sym">=</span> <span class="kwd">textbox_widget_create</span><span class="sym">(</span>window<span class="sym">, &amp;</span>cl<span class="sym">[</span>i<span class="sym">]-&gt;</span>bounds<span class="sym">,</span> <span class="num">0</span> <span class="sym">);</span>
+<span class="line">   53 </span>                <span class="kwd">textbox_set_text</span><span class="sym">(</span> wgt<span class="sym">,</span> cl<span class="sym">[</span>i<span class="sym">]-&gt;</span>name <span class="sym">);</span>
+<span class="line">   54 </span>            <span class="sym">}</span> <span class="kwa">else</span> <span class="sym">{</span>
+<span class="line">   55 </span>                wgt <span class="sym">=</span> <span class="kwd">button_widget_create</span><span class="sym">(</span> window<span class="sym">, &amp;</span>cl<span class="sym">[</span>i<span class="sym">]-&gt;</span>bounds<span class="sym">,</span> <span class="num">0</span> <span class="sym">);</span>
+<span class="line">   56 </span>                <span class="kwd">button_set_text</span><span class="sym">(</span>wgt<span class="sym">,</span> cl<span class="sym">[</span>i<span class="sym">]-&gt;</span>name<span class="sym">);</span>
+<span class="line">   57 </span>            <span class="sym">}</span>
+<span class="line">   58 </span>        <span class="sym">}</span>
+<span class="line">   59 </span>    <span class="sym">}</span>
+<span class="line">   60 </span>
+<span class="line">   61 </span>    <span class="kwd">window_show</span><span class="sym">(</span> window <span class="sym">);</span>
+<span class="line">   62 </span>    <span class="kwd">window_focus</span><span class="sym">(</span> window <span class="sym">);</span>
+<span class="line">   63 </span>
+<span class="line">   64 </span>    <span class="kwd">claro_loop</span><span class="sym">( );</span>
+<span class="line">   65 </span>
+<span class="line">   66 </span>    <span class="kwd">layout_destroy</span><span class="sym">(</span>lt<span class="sym">);</span>
+<span class="line">   67 </span>
+<span class="line">   68 </span>    <span class="kwa">return</span> <span class="num">0</span><span class="sym">;</span>
+<span class="line">   69 </span><span class="sym">}</span>
+</pre>
+</body>
+</html>
+<!--HTML generated by highlight 2.3-4 beta, http://www.andre-simon.de/-->

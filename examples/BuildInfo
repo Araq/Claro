@@ -1,0 +1,58 @@
+info
+	name "claro examples"
+	description "Claro Examples"
+	version "0.1"
+
+targets
+	none
+
+contains
+	recurse canvas canvas
+	recurse combo combo
+	recurse designer designer
+	recurse helloworld helloworld
+	recurse image image
+	recurse layout layout
+	recurse list list
+	recurse progress progress
+	recurse radio radio
+	recurse splitter splitter
+	recurse workspace workspace
+	recurse customdraw customdraw
+	recurse contextual contextual
+
+null
+	recurse net net
+
+options
+	none
+
+depends
+	platform win32
+		none
+	platform darwin
+		none
+	platform posix
+		test pkg-config "gtk+-2.0 gdk-2.0"
+	platform all
+		none
+
+flags
+	platform win32
+		(cairo) cflags "-I/MinGW/include/cairo"
+		(cairo) ldflags "-L/MinGW/lib -lcairo"
+		(opengl) ldflags "-lopengl32 -lglu32"
+		ldflags "-lgdi32 -lole32  -lcomctl32 -lmsvcp60"
+	library "claro-base"
+	library "claro-graphics"
+	libdir "^src"
+	libdir "^src/claro/base"
+	libdir "^src/claro/graphics"
+	platform darwin
+		(cairo) cflags "-I/usr/local/include/cairo"
+		(cairo) ldflags "-L/usr/local/lib -lcairo"
+	platform posix
+		pkg-config "gtk+-2.0 gdk-2.0"
+		(cairo) pkg-config "cairo"
+	platform all
+		(!cairo) define NO_CAIRO

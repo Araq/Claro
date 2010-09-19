@@ -1,0 +1,127 @@
+Import('env')
+
+targets = []
+
+def ClaroProgram( prg, files, shared=0 ):
+	lb = []
+	if shared:
+		lb = ["claro-base", "claro-graphics"]
+		#files.append( '#build/' + env['SHLIBPREFIX'] + 'claro-base' + env['SHLIBSUFFIX'] )
+		#files.append( '#build/' + env['SHLIBPREFIX'] + 'claro-graphics' + env['SHLIBSUFFIX'] )
+	else:
+		files.append( "#build/libclaro-base.a" )
+		files.append( "#build/libclaro-graphics.a" )
+	Program( "#build/" + prg, files, LIBS=lb )
+	targets.append( "#build/" + prg )
+
+useShared = 1
+
+ClaroProgram( "hello", ["helloworld/hello.c"], useShared )
+ClaroProgram( "radio", ["radio/radio.c"], useShared )
+ClaroProgram( "combo", ["combo/combo.c"], useShared )
+ClaroProgram( "layout_test", ["layout/layout_test.c"], useShared )
+ClaroProgram( "layout_any", ["layout/layout_any.c"], useShared )
+ClaroProgram( "splitter", ["splitter/splitter-test.c"], useShared )
+ClaroProgram( "cldlg", ["cldlg/cldlg.c"], useShared )
+ClaroProgram( "designer", ["designer/designer.c"], useShared )
+ClaroProgram( "progress", ["progress/progress-test.c"], useShared )
+ClaroProgram( "image", ["image/image.c"], useShared )
+ClaroProgram( "list", ["list/list.c"], useShared )
+ClaroProgram( "listview", ["list/listview.c"], useShared )
+ClaroProgram( "workspace", ["workspace/workspace.c"], useShared )
+
+
+#Program("#build/hello", ["helloworld/hello.c", '#build/' + env['SHLIBPREFIX'] + 'claro-graphics'+env['SHLIBSUFFIX'], '#build/' + env['SHLIBPREFIX'] + 'claro-base'+env['SHLIBSUFFIX']])
+#
+#Program("#build/radio", ["radio/radio.c", "#build/libclaro-base.a", "#build/libclaro-graphics.a"])
+#Program("#build/combo", ["combo/combo.c", "#build/libclaro-base.a", "#build/libclaro-graphics.a"])
+#
+#Program("#build/layout_test", ["layout/layout_test.c", "#build/libclaro-base.a", "#build/libclaro-graphics.a"])
+#Program("#build/layout_any", ["layout/layout_any.c", "#build/libclaro-base.a", "#build/libclaro-graphics.a"])
+#
+#Program("#build/splitter-test", ["splitter/splitter-test.c", "#build/libclaro-base.a", "#build/libclaro-graphics.a"])
+#
+#Program("#build/cldlg", ["cldlg/cldlg.c", "#build/libclaro-base.a", "#build/libclaro-graphics.a"])
+#Program("#build/designer", ["designer/designer.c", "#build/libclaro-base.a", "#build/libclaro-graphics.a"])
+#Program("#build/progress-test", ["progress/progress-test.c", "#build/libclaro-base.a", "#build/libclaro-graphics.a"])
+#
+#Program("#build/image", ["image/image.c", "#build/libclaro-base.a", "#build/libclaro-graphics.a"])
+#
+#Program("#build/list", ["list/list.c", "#build/libclaro-base.a", "#build/libclaro-graphics.a"])
+#Program("#build/listview", ["list/listview.c", "#build/libclaro-base.a", "#build/libclaro-graphics.a"])
+#
+#Program("#build/workspace", ["workspace/workspace.c", "#build/libclaro-base.a", "#build/libclaro-graphics.a"])
+
+
+#targets = [
+#	"#build/hello",
+#	"#build/layout_test",
+#	"#build/layout_any",
+#	"#build/splitter-test",
+#	"#build/cldlg",
+#	"#build/designer",
+#	"#build/progress-test",
+#	"#build/radio",
+#	"#build/combo",
+#	"#build/image",
+#	"#build/list",
+#	"#build/listview",
+#	"#build/workspace",
+#]
+
+if env.no_cairo == 0:
+	#Program("#build/canvas-test", ["canvas/canvas-test.c", "#build/libclaro-base.a", "#build/libclaro-graphics.a"])
+	#Program("#build/canvas-speed", ["canvas/canvas-speed.c", "#build/libclaro-base.a", "#build/libclaro-graphics.a"])
+	ClaroProgram( "canvas-test", ["canvas/canvas-test.c"], useShared )
+	ClaroProgram( "canvas-speed", ["canvas/canvas-speed.c"], useShared )
+	
+	#targets += [
+	#"#build/canvas-test",
+	#"#build/canvas-speed",
+	#]
+
+if env['PLATFORM'] == 'win32':
+	targets = ["%s.exe" % t for t in targets]
+
+if env['PLATFORM'] == 'darwin':
+	fw = [
+		['#build/libclaro-base.dylib', 'libclaro-base.dylib'],
+		['#build/libclaro-graphics.dylib', 'libclaro-graphics.dylib'],
+	]
+	env.MakeBundle( '#build/Hello Shared.app', '#build/hello-shared', '', '#macosx/base.plist', typecode='APPL', frameworks=fw )
+	env.MakeBundle( '#build/Layout Test.app', '#build/layout_test', '', '#macosx/base.plist', typecode='APPL', frameworks=fw )
+	env.MakeBundle( '#build/Layout Any.app', '#build/layout_any', '', '#macosx/base.plist', typecode='APPL', frameworks=fw )
+	env.MakeBundle( '#build/Canvas Test.app', '#build/canvas-test', '', '#macosx/base.plist', typecode='APPL', frameworks=fw )
+	env.MakeBundle( '#build/Canvas Speed.app', '#build/canvas-speed', '', '#macosx/base.plist', typecode='APPL', frameworks=fw )
+	env.MakeBundle( '#build/Splitter Test.app', '#build/splitter-test', '', '#macosx/base.plist', typecode='APPL', frameworks=fw )
+	env.MakeBundle( '#build/Progress Test.app', '#build/progress-test', '', '#macosx/base.plist', typecode='APPL', frameworks=fw )
+	env.MakeBundle( '#build/Designer.app', '#build/designer', '', '#macosx/base.plist', typecode='APPL', frameworks=fw )
+	env.MakeBundle( '#build/Radio.app', '#build/radio', '', '#macosx/base.plist', typecode='APPL', frameworks=fw )
+	env.MakeBundle( '#build/Image.app', '#build/image', '', '#macosx/base.plist', typecode='APPL', frameworks=fw )
+	env.MakeBundle( '#build/List.app', '#build/list', '', '#macosx/base.plist', typecode='APPL', frameworks=fw )
+	env.MakeBundle( '#build/ListView.app', '#build/listview', '', '#macosx/base.plist', typecode='APPL', frameworks=fw )
+	env.MakeBundle( '#build/Combo.app', '#build/combo', '', '#macosx/base.plist', typecode='APPL', frameworks=fw )
+	env.MakeBundle( '#build/Workspace.app', '#build/workspace', '', '#macosx/base.plist', typecode='APPL', frameworks=fw )
+	
+	targets += [
+		"#build/Hello Shared.app",
+		"#build/Layout Test.app",
+		"#build/Layout Any.app",
+		"#build/Canvas Test.app",
+		"#build/Canvas Speed.app",
+		"#build/Splitter Test.app",
+		"#build/Progress Test.app",
+		"#build/Designer.app",
+		"#build/Radio.app",
+		"#build/Image.app",
+		"#build/List.app",
+		"#build/ListView.app",
+		"#build/Combo.app",
+		"#build/Workspace.app",
+	]
+
+if env['PLATFORM'] == 'win32':
+	Alias( "all", targets )
+	Default( 'all' )
+else:
+	Alias( "examples", targets )

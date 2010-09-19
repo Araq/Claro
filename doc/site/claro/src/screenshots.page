@@ -1,0 +1,199 @@
+---
+title: "Screenshots"
+inMenu: true
+directoryName: Claro
+---
+
+h1. Screenshots And Examples
+
+We automatically generate screenshots for our example programs.  These samples each demonstrate
+either a particular widget's functionality or whole integrated widgets together.  Many of these
+screenshots were done with the layout_any example, which takes a lelex on the command line and
+renders all the components.  It's like a poor man's GUI designer.
+
+Each screenshot also has a sample source file you can look at to see how it's all done.
+Keep in mind that right now the actual usage patterns for the API are in flux, and we're
+hoping to make things even simpler.
+
+
+h2. Demo Video
+
+To really get a feel for how Claro Graphics works you "should watch the video (requires Flash)":claro_sample.html
+of me playing with some of the components.  It's Claro Graphics layouts and fast dynamic resizing that 
+really makes it nice to work with.
+
+*The demo doesn't show the dynamic resizing Claro Graphics is capable of doing.  Blame vnc2swf.*
+
+h2. GTK Screenshots 
+
+These are screenshots taken from a Linux system running GTK 2.x under XFCE4.  They
+were taken automatically using the ImageMagick @import@ command to snap an image
+of the window a few seconds after it loads.  If you're clever, you can figure out
+the time we did the screenshots.
+
+h3. Hello World
+
+This is your classic first application.  It actually doesn't use LEL so that we
+can demonstrate to the masochists of the world that, yes, you can torture
+yourself with hand layout.
+
+<fieldset class="screenshot">
+<legend>GTK : Win32 : MacOSX</legend>
+!images/screenshots/gtk/hello.png!:examples/hello.c.html
+!images/screenshots/win32/hello.png!:examples/hello.c.html
+!images/screenshots/macosx/hello.png!:examples/hello.c.html
+</fieldset>
+
+"View Source":examples/hello.c.html
+
+
+h3. Layout Test
+
+This is a simple tester for the LEL engine.  It places a textbox, input, and
+send button component, but you give it a lelex on the command line to do it.
+Here's the command that did this one:
+
+@layout_test "[_textbox][input|send(60)]"@
+
+<fieldset class="screenshot">
+<legend>GTK</legend>
+!images/screenshots/gtk/layout_test.png!:examples/layout_test.c.html
+</fieldset>
+
+<fieldset class="screenshot">
+<legend>Win32</legend>
+!images/screenshots/win32/layout_test.png!:examples/layout_test.c.html
+</fieldset>
+
+<fieldset class="screenshot">
+<legend>MacOSX</legend>
+!images/screenshots/macosx/layout_test.png!:examples/layout_test.c.html
+</fieldset>
+
+
+"View Source":examples/layout_test.c.html
+
+
+h3. Layout Anything
+
+The layout_any sample is kind of our dirty little GUI designer.
+It simply takes a lelex on the command line, along with a few parameters
+for the initial bounds, and then lays out the entire interface dynamically.
+If you start a LEL cell with a 't' then it'll make that a text box.  Any
+cells without a name are left blank (for spacing).  Finally all other cells
+get a button.  "View the source":examples/layout_any.c.html to see just
+how simple this all is.
+
+<fieldset class="screenshot">
+<legend>GTK</legend>
+!images/screenshots/gtk/layout_any.png!:examples/layout_any.c.html
+</fieldset>
+
+<fieldset class="screenshot">
+<legend>Win32</legend>
+!images/screenshots/win32/layout_any.png!:examples/layout_any.c.html
+</fieldset>
+
+<fieldset class="screenshot">
+<legend>MacOSX</legend>
+!images/screenshots/macosx/layout_any.png!:examples/layout_any.c.html
+</fieldset>
+
+The command to render the above screenshot was:
+
+@layout_any 400 400 50 30 "[menu|menu|menu|menu][b1<|b2<|b3<|b4<|b5<|b6<][_text][text.input|>send]" @
+
+
+h4. Simple Table Sample
+
+This next screenshot is an example of using layout_any to play with the
+LEL engine.  With this example I just did a small table of cells to demonstrate
+that LEL can handle quite complex layouts.  The command for it was pretty big though
+since there needs to be one @"[t1|t2|t3|t4|t5]"@ row for each column.  A simple for-loop
+would eliminate this, but it's just a demo.
+
+<fieldset class="screenshot">
+<legend>GTK</legend>
+!images/screenshots/gtk/simple_table.png!:examples/layout_any.c.html
+</fieldset>
+
+<fieldset class="screenshot">
+<legend>Win32</legend>
+!images/screenshots/win32/simple_table.png!:examples/layout_any.c.html
+</fieldset>
+
+<fieldset class="screenshot">
+<legend>MacOSX</legend>
+!images/screenshots/macosx/simple_table.png!:examples/layout_any.c.html
+</fieldset>
+
+The nice thing is that the actual "source":examples/layout_any.c.html to do this
+doesn't change.  We just used layout_any like before but gave a totally different
+lelex for the layout.
+
+
+h3. Splitter Demo
+
+Claro Graphics has a complete splitter that uses the native splitter on GTK and Cocoa (OSX),
+but which uses a custom LEL enabled splitter component on Win32.  The splitter
+is very easy to use and you can even nest LEL layouts inside it to get arbitrary
+smooth sizing on each panel.  In this example the bottom right panel has four buttons,
+but all of them are laid out with a container and lelex.
+
+
+<fieldset class="screenshot">
+<legend>GTK</legend>
+!images/screenshots/gtk/splitter-test.png!:examples/splitter-test.c.html
+</fieldset>
+
+<fieldset class="screenshot">
+<legend>Win32</legend>
+!images/screenshots/win32/splitter-test.png!:examples/splitter-test.c.html
+</fieldset>
+
+<fieldset class="screenshot">
+<legend>MacOSX</legend>
+!images/screenshots/macosx/splitter-test.png!:examples/splitter-test.c.html
+</fieldset>
+
+"View Source":examples/splitter-test.c.html
+
+What's very nice is that the lelex for the lower right pane also demonstrates using
+set-width cells to do vertical and horizontal spacing:  
+
+@lt = layout_create( "[_ul|(10)|ur][{10}][_ll|(10)|lr]", b, 10, 10 );@
+
+That one line makes the four quadrants (ul, ur, ll, lr), but puts 10 points of even
+space between them.  This is *much* better than having to tell the widget what it's
+spacing should be.
+
+
+h3. Canvas Clock
+
+Probably the neatest demo, the Canvas Clock uses our "Cairo":http://cairographics.org/introduction
+based canvas widget to draw a functioning analog clock.  The clock shown in the demo is in 
+the starting state, and the Red, Gree, Blue buttons turn on those color bits to change the circle's
+color.  This canvas works exactly the same on all three platforms, uses the Cairo API (not one
+we cooked up), and even dynamically resizes like all the other widgest so you can use it with LEL.
+
+<fieldset class="screenshot">
+<legend>GTK : Win32 : MacOSX</legend>
+!images/screenshots/gtk/canvas-test.png!:examples/canvas-test.c.html
+!images/screenshots/win32/canvas-test.png!:examples/canvas-test.c.html
+!images/screenshots/macosx/canvas-test.png!:examples/canvas-test.c.html
+</fieldset>
+
+"View Source":examples/canvas-test.c.html
+
+The code for Canvas Clock is based on "this code for doing a clock with Cairo":http://www.xs4all.nl/~writser/cairoclock/
+that had the stuff all figured out.  We just dropped in the right Cairo calls and done.
+
+h3. Radio button, Checkbox and Frame
+
+<fieldset class="screenshot">
+<legend>GTK : Win32 : MacOSX</legend>
+!images/screenshots/gtk/radio.png!
+!images/screenshots/win32/radio.png!
+!images/screenshots/macosx/radio.png!
+</fieldset>
+

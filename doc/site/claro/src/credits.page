@@ -1,0 +1,29 @@
+---
+title: "Credits"
+inMenu: true
+directoryName: Claro
+---
+h2. Credits
+
+<fieldset>
+<legend>Theo Julienne</legend>
+Claro was originally started by "Theo":http://theo.julienne.org after he got sick of using the available
+toolkits (especially Qt) for the open-source rewrite of the 
+"Bersirc":http://bersirc.free2code.net/index.php/home IRC client.
+</fieldset>
+
+<fieldset>
+<legend>Zed A. Shaw</legend>
+"Zed":http://www.zedshaw.com/ joined the Claro project out of pure boredom with everything else on the
+Internet and at the urging of an extreme dose of Nirvana (the band).  After
+playing with Bersirc and seeing how the original Claro was designed, he decided to throw 
+in whatever he could to make it better.  His own evil genius is present in the LEL layout
+code and the majority of this site.  So yes, I wrote this.
+</fieldset>
+
+<fieldset>
+<legend>Dave Collien</legend>
+Dave designed the logo and is not responsible for any of the coding, in fact he has never seen the code, 
+yet he is responsible for maintaining good morale and regularly saying "I <3 Claro".
+</fieldset>
+

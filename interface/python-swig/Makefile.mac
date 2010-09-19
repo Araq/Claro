@@ -1,0 +1,14 @@
+CFLAGS=-I../../src -I/Library/Frameworks/Python.framework/Versions/2.4/include/python2.4 -I/sw/include/cairo -I/opt/local/include/cairo -I/usr/local/include/cairo
+LDFLAGS=-L../../src/claro/base/ -framework Python -lclaro-graphics -L../../src/claro/graphics/ -framework Cocoa -L/Library/Frameworks/Python.framework/Versions/2.4/lib -L/sw/lib -lcairo -lclaro-base -dynamic
+
+all: _claro.so
+
+claro_wrap.c: claro.i
+	swig -python claro.i
+
+_claro.so: claro_wrap.o
+	gcc claro_wrap.o -o _claro.so -bundle $(LDFLAGS)
+
+
+clean:
+	rm -rf *.c *.o *.so *.pyc claro.py

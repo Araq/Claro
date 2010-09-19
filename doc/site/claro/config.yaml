@@ -1,0 +1,6 @@
+# Configuration file for webgen
+# Used to set the parameters of the plugins
+
+
+FileCopyHandler:
+    paths: ["**/*.js", "**/*.css", "**/*.jpg", "**/*.png", "**/*.gif", "**/*.html", "**/*.c", "images/**/*.*"]

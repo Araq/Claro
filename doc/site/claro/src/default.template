@@ -1,0 +1,40 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{lang:}">
+  <!-- Based on a template by Ben Meadowcroft, see http://www.benmeadowcroft.com/webdev/  for more info-->
+  <head>
+    <title>{title: }</title>
+    <link href="{relocatable: default.css}" rel="stylesheet" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript" src="corners.js"></script>
+  </head>
+  <body>
+    
+    <div class="title" id="title">
+      <img src="{relocatable: images/logo.png}"> 
+    </div>
+    
+    
+    <div class="main" id="main">
+      <div class="content">
+        {content: }
+      </div>
+    </div>
+    
+    <div class="sidebar">
+      
+      <div class="menu" id="menu">
+          {menu: }
+      </div>
+      
+      <div class="other" id="other">
+        <div class="content">
+          Check the Downloads page for SVN details!
+        </div>
+      </div>
+    </div>
+    
+    
+  </body>
+</html>
