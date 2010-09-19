@@ -162,7 +162,7 @@ void cgraphics_treeview_new_row( widget_t *widget, list_item_t *item )
 
 void cgraphics_treeview_remove_row( widget_t *widget, list_item_t *item )
 {
-	GtkListStore *store;
+	GtkTreeStore *store;
 	GtkTreeIter iter;
 	
 	store = (GtkTreeStore *)gtk_tree_view_get_model( GTK_TREE_VIEW(widget->container) );
@@ -185,7 +185,7 @@ void cgraphics_treeview_select_row( widget_t *widget, list_item_t *item )
 
 void cgraphics_treeview_expand( widget_t *widget, list_item_t *item )
 {
-	GtkListStore *store;
+	GtkTreeStore *store;
 	GtkTreeIter iter;
 	
 	store = (GtkTreeStore *)gtk_tree_view_get_model( GTK_TREE_VIEW(widget->container) );
@@ -197,7 +197,7 @@ void cgraphics_treeview_expand( widget_t *widget, list_item_t *item )
 
 void cgraphics_treeview_collapse( widget_t *widget, list_item_t *item )
 {
-	GtkListStore *store;
+	GtkTreeStore *store;
 	GtkTreeIter iter;
 	
 	store = (GtkTreeStore *)gtk_tree_view_get_model( GTK_TREE_VIEW(widget->container) );

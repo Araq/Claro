@@ -22,7 +22,7 @@
 
 void *cgraphics_font_from_font( font_t *font )
 {
-	
+	return NULL;
 }
 
 void cgraphics_widget_set_font( widget_t *widget, font_t *font )

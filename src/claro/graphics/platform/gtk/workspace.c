@@ -51,7 +51,7 @@ object_t *cgraphics_workspace_get_active( widget_t *widget )
 	gwidget = gtk_notebook_get_nth_page( widget->native, active );
 	cw = cgraphics_gtk_to_claro_widget( gwidget );
 	
-	return cw;
+	return (object_t*)cw;
 }
 
 void cgraphics_workspace_cascade( widget_t *widget )
