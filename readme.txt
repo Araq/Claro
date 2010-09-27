@@ -11,7 +11,7 @@ Nimrod.
 
 To try it out, build it with::
   
-  scons
+  python koch.py claro
 
 
 Enjoy!
