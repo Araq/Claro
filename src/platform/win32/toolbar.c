@@ -33,7 +33,7 @@ void cgraphics_toolbar_widget_create( widget_t *widget )
 {
 	object_t *object = (object_t *)widget;
 	widget_t *parent = (widget_t *)object->parent;
-	HWND hwnd, hwnd_parent = parent->native; // toolbar is NOT inside the container widget :)
+	HWND hwnd; // toolbar is NOT inside the container widget :)
 	HWND rebar = parent->ndata;
 	REBARBANDINFO ri;
 	DWORD dwBtnSize;
@@ -81,7 +81,6 @@ void cgraphics_toolbar_new_icon( widget_t *widget, list_item_t *item )
 	TBBUTTON tbut;
 	DWORD dwBtnSize;
 	node_t *n;
-	int a;
 	image_t *img = item->data[0];
 	const char *txt = item->data[1];
 	
@@ -123,7 +122,7 @@ void cgraphics_toolbar_new_icon( widget_t *widget, list_item_t *item )
 		
 		if ( widget->flags & cToolbarShowText )
 		{
-			tbut.iString = txt;
+			tbut.iString = (size_t)txt;
 			tbut.fsStyle |= BTNS_SHOWTEXT;
 		}
 		else

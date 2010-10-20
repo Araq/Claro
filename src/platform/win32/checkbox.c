@@ -23,7 +23,7 @@ void cgraphics_checkbox_widget_create( widget_t *widget )
 {
 	object_t *object = (object_t *)widget;
 	widget_t *parent = (widget_t *)object->parent;
-	HWND hwnd, hwnd_parent = widget_get_container(parent);
+	HWND hwnd, hwnd_parent = widget_get_container(OBJECT(parent));
 	
 	/* FIXME: bad default */
 	if ( widget->size_req->h == -1 )

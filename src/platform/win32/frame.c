@@ -20,11 +20,12 @@
 
 widget_t *cg_find_by_native( HWND hwnd );
 
+LRESULT CALLBACK cg_win32_proc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
+
 LRESULT CALLBACK cg_win32_frame_proc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
 	widget_t *w;
 	WNDPROC p;
-	RECT r;
 	
 	w = cg_find_by_native( hWnd );
 	
@@ -40,7 +41,7 @@ LRESULT CALLBACK cg_win32_frame_proc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
 		if ( uMsg == WM_SIZE )
 		{
 			MoveWindow( w->container, 10, 20, LOWORD(lParam)-20, HIWORD(lParam)-30, 1 );
-			widget_set_size( w, LOWORD(lParam), HIWORD(lParam), 1 );
+			widget_set_size( OBJECT(w), LOWORD(lParam), HIWORD(lParam), 1 );
 		}
 		
 		return CallWindowProc( p, hWnd, uMsg, wParam, lParam );
@@ -54,10 +55,10 @@ LRESULT CALLBACK cg_win32_frame_proc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
 			DestroyWindow( hWnd );
 			return 0;
 		case WM_MOVE:
-			widget_set_position( w, LOWORD(lParam), HIWORD(lParam), 1 );
+			widget_set_position( OBJECT(w), LOWORD(lParam), HIWORD(lParam), 1 );
 			break;
 		case WM_SIZE:
-			widget_set_content_size( w, LOWORD(lParam), HIWORD(lParam), 1 );
+			widget_set_content_size( OBJECT(w), LOWORD(lParam), HIWORD(lParam), 1 );
 			break;
 		case WM_COMMAND:
 			return cg_win32_proc( hWnd, uMsg, wParam, lParam );
@@ -71,12 +72,10 @@ void cgraphics_frame_widget_create( widget_t *widget )
 {
 	object_t *object = (object_t *)widget;
 	widget_t *parent = (widget_t *)object->parent;
-	HWND hwnd, hwnd_parent = widget_get_container(parent), rhwnd;
+	HWND hwnd, hwnd_parent = widget_get_container(OBJECT(parent)), rhwnd;
 	
 	WNDCLASSEX wc;
-	int wflags, wexflags;
 	char clname[1024];
-	RECT rect;
 	
 	sprintf( clname, "claro_frame_%d", ++curr_classname_id );
 	
@@ -124,7 +123,7 @@ void cgraphics_frame_widget_create( widget_t *widget )
 	                               NULL, (HINSTANCE) GetModuleHandle( NULL ), NULL ) ) )
 		MessageBox( 0, "Could not create frame HWND(2).", "Claro error", 0 );
 	
-	widget->ndata = SetWindowLongPtr( hwnd, GWLP_WNDPROC, (long)&cg_win32_frame_proc );
+	widget->ndata = (void*)SetWindowLongPtr( hwnd, GWLP_WNDPROC, (long)&cg_win32_frame_proc );
 	
 	widget->native = hwnd;
 	widget->container = rhwnd;
@@ -136,7 +135,7 @@ void cgraphics_frame_widget_create( widget_t *widget )
 	UpdateWindow( rhwnd );
 	
 	// set the size of the widget to the size of the container :)
-	widget_set_size( widget, widget->size_req->w-20, widget->size_req->h-30, 1 );
+	widget_set_size( OBJECT(widget), widget->size_req->w-20, widget->size_req->h-30, 1 );
 	
 }
 

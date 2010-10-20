@@ -61,7 +61,7 @@ HMENU cgraphics_menubar_get_native_parent( widget_t *widget, list_item_t *item )
 		return widget->native;
 	else
 	{
-		pitem = item->object.parent;
+		pitem = (list_item_t*)item->object.parent;
 		
 		if ( pitem->native == 0 )
 		{

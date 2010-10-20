@@ -43,7 +43,7 @@ void cgraphics_widget_set_font( widget_t *widget, font_t *font )
 {
 	HFONT f = (HFONT)cgraphics_font_from_font( font );
 	
-	SendMessage( widget->native, WM_SETFONT, f, true );
+	SendMessage( widget->native, WM_SETFONT, (size_t)f, true );
 	
 	if ( f != widget->font.native && widget->font.native != 0 && widget->font.native != nicerfont )
 		DeleteObject( widget->font.native );
@@ -55,7 +55,7 @@ void cgraphics_widget_set_font( widget_t *widget, font_t *font )
 int cgraphics_widget_font_string_width( widget_t *w, char *text, int chars )
 {
 	SIZE s;
-	HDC wdc, dc;
+	HDC dc;
 	
 	dc = GetDC( w->native );
 	

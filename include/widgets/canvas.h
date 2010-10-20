@@ -55,6 +55,10 @@ struct canvas_widget_
 #ifndef NO_CAIRO
 	cairo_surface_t *surface;
 	cairo_t *cr;
+#else
+  /* be binary compatible! */
+	void* unused1;
+	void* unused2;
 #endif
 	
 	void *surfdata;
@@ -69,6 +73,10 @@ struct canvas_widget_
 	int csz_loaded;
 	
 	int fontsize;
+#else
+  double unused3[6 * 256]; /* cairo_text_extents_t consists of 6 doubles */
+  int unused4;
+  int unused5;
 #endif
 };
 

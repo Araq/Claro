@@ -20,6 +20,9 @@
 
 /* Container */
 
+LRESULT CALLBACK cg_win32_proc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM
+  lParam);
+
 LRESULT CALLBACK cg_container_win32_proc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
 	widget_t *w;
@@ -38,11 +41,11 @@ LRESULT CALLBACK cg_container_win32_proc( HWND hWnd, UINT uMsg, WPARAM wParam, L
 	switch ( uMsg )
 	{
 		case WM_MOVE:
-			widget_set_position( w, LOWORD(lParam), HIWORD(lParam), 1 );
+			widget_set_position( OBJECT(w), LOWORD(lParam), HIWORD(lParam), 1 );
 			break;
 		case WM_SIZE:
-			widget_set_size( w, LOWORD(lParam), HIWORD(lParam), 1 );
-			widget_set_content_size( w, LOWORD(lParam), HIWORD(lParam), 1 );
+			widget_set_size( OBJECT(w), LOWORD(lParam), HIWORD(lParam), 1 );
+			widget_set_content_size( OBJECT(w), LOWORD(lParam), HIWORD(lParam), 1 );
 			widget_resized_handle( OBJECT(w), 0 );
 			break;
 		case WM_COMMAND:
@@ -59,7 +62,7 @@ void cgraphics_container_widget_create( widget_t *widget )
 	widget_t *parent = (widget_t *)object->parent;
 	//container_widget_t *sw = (container_widget_t *)widget;
 	//native_container_widget_t *nw = (native_container_widget_t *)sw->widget.ndata;
-	HWND hwnd, hwnd_parent = widget_get_container(parent);
+	HWND hwnd, hwnd_parent = widget_get_container(OBJECT(parent));
 	WNDCLASSEX wc;
 	char clname[1024];
 	

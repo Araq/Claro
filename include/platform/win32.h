@@ -34,7 +34,7 @@
 #include <windows.h>
 #include <commctrl.h>
 
-#include <claro/graphics.h>
+#include "graphics.h"
 #ifndef NO_CAIRO
 #include <cairo-win32.h>
 #endif

@@ -239,7 +239,7 @@ CLFEXP void widget_resized_handle( object_t *obj, event_t *event );
 CLVEXP bounds_t no_bounds;
 
 #ifndef CLARO_SCRIPT_INTERFACE
-CLFEXP typedef void (*cgraphics_create_function)(widget_t *widget);
+typedef void (*cgraphics_create_function)(widget_t *widget);
 #endif
 
 /** \internal

@@ -30,7 +30,7 @@ LRESULT CALLBACK cg_canvas_win32_proc( HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
 	RECT r;
 	PAINTSTRUCT ps;
 	HDC hdc, mdc, odc;
-	HBITMAP bmp, obmp;
+	HBITMAP obmp;
 	
 	w = cg_find_by_native( hWnd );
 	
@@ -68,7 +68,7 @@ LRESULT CALLBACK cg_canvas_win32_proc( HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
 				}
 			}
 			else
-				hdc = wParam;
+				hdc = (HDC)wParam;
             
             GetClientRect( hWnd, &r );
             FillRect( hdc, &r, (HBRUSH) (COLOR_WINDOW) );
@@ -93,9 +93,9 @@ LRESULT CALLBACK cg_canvas_win32_proc( HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
 			cairo_rectangle( cvsw->cr, r.left, r.top, r.right - r.left, r.bottom - r.top );
 			cairo_clip( cvsw->cr );
 			*/
+#ifndef NO_CAIRO
 			event_send( OBJECT(w), "redraw", "p", cvsw->cr );
 
-#ifndef NO_CAIRO
 			cairo_destroy( cvsw->cr );
 #endif
 			
@@ -175,9 +175,8 @@ void cgraphics_canvas_widget_create( widget_t *widget )
 {
 	object_t *object = (object_t *)widget;
 	widget_t *parent = (widget_t *)object->parent;
-	canvas_widget_t *cvsw = (canvas_widget_t *)widget;
 	native_canvas_widget_t *nw = 0;//(native_canvas_widget_t *)&cvsw->ndata;
-	HWND hwnd, hwnd_parent = widget_get_container(parent);
+	HWND hwnd, hwnd_parent = widget_get_container(OBJECT(parent));
 	WNDCLASSEX wc;
 	char clname[1024];
 	
@@ -219,7 +218,7 @@ void cgraphics_canvas_widget_create( widget_t *widget )
 	widget->ndata = (native_canvas_widget_t *)malloc(sizeof(native_canvas_widget_t));
 	nw = widget->ndata;
 	
-	object_addhandler( widget, "destroy", cgraphics_canvas_cleanup );
+	object_addhandler( OBJECT(widget), "destroy", cgraphics_canvas_cleanup );
 	
 	nw->bmp = 0;
 	nw->font = 0;
@@ -257,8 +256,7 @@ void cgraphics_canvas_set_text_bgcolor( widget_t *widget, double r, double g, do
 void cgraphics_canvas_set_text_font( widget_t *widget, char *face, int size, int weight, int slant, int decoration )
 {
 	native_canvas_widget_t *nw = (native_canvas_widget_t *)widget->ndata;
-	canvas_widget_t *cw = (canvas_widget_t *)widget;
-	HFONT f, o;
+	HFONT f;
 	int w = FW_NORMAL;
 	
 	if ( weight == CTEXT_WEIGHT_BOLD )
@@ -296,7 +294,6 @@ int cgraphics_canvas_text_width( widget_t *widget, const char *text, int len )
 {
 	canvas_widget_t *cw = (canvas_widget_t *)widget;
 	SIZE sz;
-	int chars;
 	
 	cgraphics_canvas_selectfont( cw );
 	

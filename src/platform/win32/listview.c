@@ -20,7 +20,7 @@
 
 LRESULT CALLBACK cg_listview_intercept_proc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
-	widget_t *w = GetWindowLong( hWnd, GWL_USERDATA );
+	widget_t *w = (widget_t *)GetWindowLong( hWnd, GWL_USERDATA );
 	listview_widget_t *lvw = (listview_widget_t *)w;
 	list_item_t *li;
 	int a, col;
@@ -34,7 +34,7 @@ LRESULT CALLBACK cg_listview_intercept_proc( HWND hWnd, UINT uMsg, WPARAM wParam
 			SetBkMode( (HDC)wParam, TRANSPARENT );
 			return (LRESULT)RGB(255,255,255); /* FIXME: hack! */
 		case WM_COMMAND:
-			li = GetWindowLong( (HWND)lParam, GWL_USERDATA );
+			li = (list_item_t *)GetWindowLong( (HWND)lParam, GWL_USERDATA );
 
 			if ( li == 0 )
 				break;
@@ -73,7 +73,7 @@ void cgraphics_listview_widget_create( widget_t *widget )
 	object_t *object = (object_t *)widget;
 	widget_t *parent = (widget_t *)object->parent;
 	listview_widget_t *lvw = (listview_widget_t *)widget;
-	HWND hwnd, hwnd_parent = widget_get_container(parent);
+	HWND hwnd, hwnd_parent = widget_get_container(OBJECT(parent));
 	
 	if ( !( hwnd = CreateWindowEx( WS_EX_CLIENTEDGE, WC_LISTVIEW, 
 	                               "",
@@ -93,8 +93,8 @@ void cgraphics_listview_widget_create( widget_t *widget )
 	
 	SendMessage( hwnd, LVM_SETEXTENDEDLISTVIEWSTYLE, 0, dw );
 	
-	SetWindowLong( widget->native, GWL_USERDATA, widget );
-	lvw->nativep = SetWindowLong( widget->native, GWL_WNDPROC, cg_listview_intercept_proc );
+	SetWindowLong( widget->native, GWL_USERDATA, (LONG)widget );
+	lvw->nativep = (void*)SetWindowLong( widget->native, GWL_WNDPROC, (LONG)cg_listview_intercept_proc );
 	
 	ShowWindow( hwnd, SW_SHOW );
 	UpdateWindow( hwnd );
@@ -130,7 +130,7 @@ void cgraphics_listview_new_row( widget_t *widget, list_item_t *item )
 	item->native = (void *)malloc( sizeof(HWND) * lvw->widget.columns );
 	memset( item->native, 0, sizeof(HWND) * lvw->widget.columns );
 	
-	SendMessage( widget->native, LVM_SETITEMCOUNT, (WPARAM)listview_get_rows(widget), 0 );
+	SendMessage( widget->native, LVM_SETITEMCOUNT, (WPARAM)listview_get_rows(OBJECT(widget)), 0 );
 }
 
 void cgraphics_listview_remove_row( widget_t *widget, list_item_t *item )
@@ -139,7 +139,7 @@ void cgraphics_listview_remove_row( widget_t *widget, list_item_t *item )
 	int a;
 	HWND *hwnds;
 	
-	SendMessage( widget->native, LVM_SETITEMCOUNT, (WPARAM)listview_get_rows(widget), 0 );
+	SendMessage( widget->native, LVM_SETITEMCOUNT, (WPARAM)listview_get_rows(OBJECT(widget)), 0 );
 	
 	hwnds = item->native;
 	

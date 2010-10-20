@@ -20,6 +20,9 @@
 
 /* Splitter */
 
+LRESULT CALLBACK cg_win32_proc(HWND hWnd, UINT Msg, WPARAM wParam, 
+  LPARAM lParam);
+
 LRESULT CALLBACK cg_splitter_win32_proc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
 	widget_t *w;
@@ -45,10 +48,10 @@ LRESULT CALLBACK cg_splitter_win32_proc( HWND hWnd, UINT uMsg, WPARAM wParam, LP
 	switch ( uMsg )
 	{
 		case WM_MOVE:
-			widget_set_position( w, LOWORD(lParam), HIWORD(lParam), 1 );
+			widget_set_position( OBJECT(w), LOWORD(lParam), HIWORD(lParam), 1 );
 			break;
 		case WM_SIZE:
-			widget_set_size( w, LOWORD(lParam), HIWORD(lParam), 1 );
+			widget_set_size( OBJECT(w), LOWORD(lParam), HIWORD(lParam), 1 );
 			b = w->size;
 			b.x = b.y = 0;
 			layout_reparse( nw->lt, b, nw->lt->col.min, nw->lt->row.min );
@@ -253,8 +256,8 @@ void cgraphics_splitter_child_create_handler( object_t *obj, event_t *event )
 	if ( cw->size_req->owner == 0 )
 		free( cw->size_req->owner );
 	
-	nw->widgets[nw->splitter_num] = child;
-	sw->children[nw->splitter_num].w = child;
+	nw->widgets[nw->splitter_num] = (void*)child;
+	sw->children[nw->splitter_num].w = (void*)child;
 	
 	nw->splitter_num++;
 	sprintf( ltw, "widget%d", nw->splitter_num );
@@ -268,7 +271,7 @@ void cgraphics_splitter_child_create_handler( object_t *obj, event_t *event )
 	// tell the widget it's got new coords
 	event_send( child, "update", "" );
 	
-	cgraphics_splitter_child_vis_updated_p( sw, 0 );
+	cgraphics_splitter_child_vis_updated_p( OBJECT(sw), 0 );
 }
 
 void cgraphics_splitter_widget_create( widget_t *widget )
@@ -277,7 +280,7 @@ void cgraphics_splitter_widget_create( widget_t *widget )
 	widget_t *parent = (widget_t *)object->parent;
 	splitter_widget_t *sw = (splitter_widget_t *)widget;
 	native_splitter_widget_t *nw = (native_splitter_widget_t *)sw->widget.ndata;
-	HWND hwnd, hwnd_parent = widget_get_container(parent);
+	HWND hwnd, hwnd_parent = widget_get_container(OBJECT(parent));
 	WNDCLASSEX wc;
 	char clname[1024];
 	char fmt[64];
@@ -344,6 +347,5 @@ void cgraphics_splitter_widget_create( widget_t *widget )
 
 void cgraphics_splitter_updated( widget_t *widget, int child )
 {
-	splitter_widget_t *sw = (splitter_widget_t *)widget;
-	cgraphics_splitter_child_vis_updated_p( widget, 0 );
+	cgraphics_splitter_child_vis_updated_p(OBJECT(widget), 0 );
 }

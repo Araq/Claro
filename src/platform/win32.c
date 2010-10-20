@@ -16,7 +16,7 @@
  */
 
 
-#include "win32.h"
+#include "platform/win32.h"
 
 HFONT nicerfont;
 int cg_isxplater = 0;
@@ -66,16 +66,12 @@ widget_t *cgraphics_get_widget_window( widget_t *w )
 }
 
 int dialog_stack_check( widget_t *r );
+void dialog_stack_pop(widget_t *w);
 
 /* intercept window procedure */
 LRESULT CALLBACK cg_intercept_proc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
-	widget_t *w = GetWindowLong( hWnd, GWL_USERDATA );
-	widget_t *win;
-	PAINTSTRUCT ps;
-	HDC hdc, hdcbuf;
-	HBITMAP hbmp, nhbmp;
-	RECT r;
+	widget_t *w = (widget_t*)GetWindowLong( hWnd, GWL_USERDATA );
 	int y;
 	SCROLLINFO si;
 	DWORD s;
@@ -98,7 +94,7 @@ LRESULT CALLBACK cg_intercept_proc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM 
 			/* only destroy the claro widget if it's the real widget,
 			   NOT the container (avoids duplicate destroy) */
 			if ( w->native == hWnd )
-				widget_destroy( w );
+				widget_destroy( OBJECT(w) );
 			
 			return 1;
 		case WM_SIZE:
@@ -108,16 +104,16 @@ LRESULT CALLBACK cg_intercept_proc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM 
 			w->visible = wParam;
 			
 			if ( wParam == true )
-				event_send( w, "show", "" );
+				event_send( OBJECT(w), "show", "" );
 			else
-				event_send( w, "hide", "" );
+				event_send( OBJECT(w), "hide", "" );
 			
 			break;
 		case WM_VSCROLL:
 		case WM_HSCROLL:
 			if ( lParam != 0 )
 			{
-				w = GetWindowLong( lParam, GWL_USERDATA );
+				w = (widget_t*)GetWindowLong( (void*)lParam, GWL_USERDATA );
 			}
 			
 			if ( !strcmp( w->object.type, "claro.graphics.widgets.scrollbar" ) )
@@ -173,7 +169,7 @@ LRESULT CALLBACK cg_intercept_proc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM 
 			
 			if ( si.nPos != y ) {
 				//printf( "%d --> %d (%s,%s)\n",y,si.nPos,w->object.type, tmp );
-				event_send( w, tmp, "" );
+				event_send( OBJECT(w), tmp, "" );
 			}
 			
 			return 0;
@@ -184,12 +180,8 @@ LRESULT CALLBACK cg_intercept_proc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM 
 
 LRESULT CALLBACK cg_msgloop_proc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
-	widget_t *w = GetWindowLong( hWnd, GWL_USERDATA );
+	widget_t *w = (widget_t*)GetWindowLong( hWnd, GWL_USERDATA );
 	widget_t *win;
-	PAINTSTRUCT ps;
-	HDC hdc, hdcbuf;
-	HBITMAP hbmp, nhbmp;
-	RECT r;
 	
 	if ( w == 0 )
 		return 1;
@@ -233,7 +225,7 @@ LRESULT CALLBACK cg_msgloop_proc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
 				}
 				else if ( wParam == VK_RETURN )
 				{
-					event_send( win, "dialog_ok", "" );
+					event_send( OBJECT(win), "dialog_ok", "" );
 					return 0;
 				}
 			}
@@ -315,7 +307,6 @@ extern widget_t *claro_current_dialog;
 void cgraphics_check_events( )
 {
 	MSG msg;
-	node_t *n, *n2;
 	widget_t *w;
 	
 	while ( PeekMessage( &msg, 0, 0, 0, PM_REMOVE ) )
@@ -425,16 +416,16 @@ void cgraphics_widget_close( widget_t *widget )
 
 void cgraphics_post_init( widget_t *widget )
 {
-	SendMessage( widget->native, WM_SETFONT, nicerfont, true );
+	SendMessage( widget->native, WM_SETFONT, (size_t)nicerfont, true );
 	widget->font.native = nicerfont;
 	
-	SetWindowLong( widget->native, GWL_USERDATA, widget );
-	widget->naddress[0] = SetWindowLong( widget->native, GWL_WNDPROC, cg_intercept_proc );
+	SetWindowLong( widget->native, GWL_USERDATA, (size_t)widget );
+	widget->naddress[0] = (void*)SetWindowLong( widget->native, GWL_WNDPROC, (size_t)cg_intercept_proc );
 	
 	if ( widget->container != 0 )
 	{
-		SetWindowLong( widget->container, GWL_USERDATA, widget );
-		widget->naddress[1] = SetWindowLong( widget->container, GWL_WNDPROC, cg_intercept_proc );
+		SetWindowLong( widget->container, GWL_USERDATA, (size_t)widget );
+		widget->naddress[1] = (void*)SetWindowLong( widget->container, GWL_WNDPROC, (size_t)cg_intercept_proc );
 	}
 	
 	widget->naddress[2] = 0;

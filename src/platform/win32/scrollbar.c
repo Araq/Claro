@@ -22,7 +22,7 @@ void cgraphics_scrollbar_widget_create( widget_t *widget )
 {
 	object_t *object = (object_t *)widget;
 	widget_t *parent = (widget_t *)object->parent;
-	HWND hwnd, hwnd_parent = widget_get_container(parent);
+	HWND hwnd, hwnd_parent = widget_get_container(OBJECT(parent));
 	SCROLLINFO si;
 	
 	/* FIXME: bad default */
@@ -89,7 +89,6 @@ void cgraphics_scrollbar_set_range( widget_t *w )
 
 void cgraphics_scrollbar_set_pos( widget_t *w, int pos )
 {
-	scrollbar_widget_t *sb = (scrollbar_widget_t *)w;
 	SCROLLINFO si;
 	
 	ZeroMemory( &si, sizeof(si) );
@@ -99,12 +98,11 @@ void cgraphics_scrollbar_set_pos( widget_t *w, int pos )
 	
 	SetScrollInfo( w->native, SB_CTL, &si, true );
 	
-	event_send( w, "scroll", "" );
+	event_send( OBJECT(w), "scroll", "" );
 }
 
 int cgraphics_scrollbar_get_pos( widget_t *w )
 {
-	scrollbar_widget_t *sb = (scrollbar_widget_t *)w;
 	SCROLLINFO si;
 	
 	ZeroMemory( &si, sizeof(si) );

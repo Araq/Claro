@@ -33,7 +33,7 @@ LRESULT CALLBACK cg_win32_image_proc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
 	if ( w == 0 )
 		return DefWindowProc( hWnd, uMsg, wParam, lParam );
 	
-	iw = w;
+	iw = (image_widget_t *)w;
 	im = iw->src;
 	
 	switch ( uMsg )
@@ -44,10 +44,10 @@ LRESULT CALLBACK cg_win32_image_proc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
 			DestroyWindow( hWnd );
 			return 0;
 		case WM_MOVE:
-			widget_set_position( w, LOWORD(lParam), HIWORD(lParam), 1 );
+			widget_set_position( OBJECT(w), LOWORD(lParam), HIWORD(lParam), 1 );
 			break;
 		case WM_SIZE:
-			widget_set_size( w, LOWORD(lParam), HIWORD(lParam), 1 );
+			widget_set_size( OBJECT(w), LOWORD(lParam), HIWORD(lParam), 1 );
 			break;
 		case WM_PAINT:
 			if ( im == NULL )
@@ -89,12 +89,10 @@ void cgraphics_image_widget_create( widget_t *widget )
 {
 	object_t *object = (object_t *)widget;
 	widget_t *parent = (widget_t *)object->parent;
-	HWND hwnd, hwnd_parent = widget_get_container(parent);
+	HWND hwnd, hwnd_parent = widget_get_container(OBJECT(parent));
 	
 	WNDCLASSEX wc;
-	int wflags, wexflags;
 	char clname[1024];
-	RECT rect;
 	
 	sprintf( clname, "claro_image_%d", ++curr_classname_id );
 	

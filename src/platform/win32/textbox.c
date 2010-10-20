@@ -24,7 +24,7 @@ void cgraphics_textbox_widget_create( widget_t *widget )
 {
 	object_t *object = (object_t *)widget;
 	widget_t *parent = (widget_t *)object->parent;
-	HWND hwnd, hwnd_parent = widget_get_container(parent);
+	HWND hwnd, hwnd_parent = widget_get_container(OBJECT(parent));
 	
 	/* FIXME: bad default */
 	if ( widget->size_req->h == -1 )
@@ -59,6 +59,6 @@ void cgraphics_textbox_set_pos( widget_t *widget, int pos )
 int cgraphics_textbox_get_pos( widget_t *widget )
 {
 	int pos;
-	SendMessage( widget->native, EM_GETSEL, &pos, NULL );
+	SendMessage( widget->native, EM_GETSEL, (size_t)&pos, 0 );
 	return pos;
 }

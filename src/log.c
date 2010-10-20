@@ -76,7 +76,7 @@ void claro_log( int level, char *application, char *file, int line, const char *
 	
 	tm = time( NULL );
 	tm_ptr = localtime( &tm );
-	strftime( tm_str, 100, "%Y-%m-%d %T", tm_ptr );
+	strftime( tm_str, 100, "%Y-%m-%d %H:%M:%S", tm_ptr );
 	
 	sprintf( place, "[%s at %s %s:%d in %s]", tm_str, application, file, line, function );
 	

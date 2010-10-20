@@ -22,7 +22,7 @@ void cgraphics_treeview_widget_create( widget_t *widget )
 {
 	object_t *object = (object_t *)widget;
 	widget_t *parent = (widget_t *)object->parent;
-	HWND hwnd, hwnd_parent = widget_get_container(parent);
+	HWND hwnd, hwnd_parent = widget_get_container(OBJECT(parent));
 	HIMAGELIST himl;
 	HBITMAP bmp;
 	
@@ -42,7 +42,7 @@ void cgraphics_treeview_widget_create( widget_t *widget )
 	himl = ImageList_Create( 16, 16, ILC_COLOR32, 0, 1024 );
 	bmp = CreateBitmap( 16, 16, 1, 1, 0 );
 	ImageList_Add( himl, bmp, 0 );
-	TreeView_SetImageList( hwnd, himl, TVSIL_NORMAL ); 
+	//TreeView_SetImageList( hwnd, himl, TVSIL_NORMAL ); 
 	widget->ndata = himl;
 	
 	widget->native = hwnd;
@@ -55,7 +55,6 @@ void cgraphics_treeview_new_row( widget_t *widget, list_item_t *item )
 {
 	TVITEM tvi; 
 	TVINSERTSTRUCT tvins;
-	HTREEITEM hti;
 	list_item_t *pitem, *litem;
 	HIMAGELIST himl = widget->ndata;
 	
@@ -75,7 +74,7 @@ void cgraphics_treeview_new_row( widget_t *widget, list_item_t *item )
 	tvi.pszText = item->data[1]; 
     tvi.cchTextMax = sizeof(tvi.pszText)/sizeof(tvi.pszText[0]); 
 	
-	tvi.lParam = item;
+	tvi.lParam = (LPARAM)item;
 	
 	tvins.item = tvi;
 	
@@ -93,11 +92,12 @@ void cgraphics_treeview_new_row( widget_t *widget, list_item_t *item )
 		tvins.hInsertAfter = TVI_FIRST;
 	else
 	{
-		litem = list_widget_get_row( widget, pitem, item->row - 1 );
+		litem = (list_item_t*)list_widget_get_row(OBJECT(widget), pitem, 
+		  item->row - 1 );
 		tvins.hInsertAfter = litem->native;
 	}
 	
-	item->native = SendMessage( widget->native, TVM_INSERTITEM, 0, (LPARAM)(LPTVINSERTSTRUCT)&tvins );
+	item->native = (void*)SendMessage( widget->native, TVM_INSERTITEM, 0, (LPARAM)(LPTVINSERTSTRUCT)&tvins );
 }
 
 void cgraphics_treeview_remove_row( widget_t *widget, list_item_t *item )

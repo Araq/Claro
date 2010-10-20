@@ -25,12 +25,7 @@ extern int mblist_cmdid;
 
 void cgraphics_menu_widget_create( widget_t *widget )
 {
-	object_t *object = (object_t *)widget;
-	widget_t *parent = (widget_t *)object->parent;
-	window_widget_t *wp = (window_widget_t *)parent;
-	HWND hwnd_parent = parent->native; // menu is NOT inside the container widget :)
 	HMENU menu;
-	RECT r;
 	
 	menu = CreatePopupMenu( );
 	
@@ -49,7 +44,7 @@ HMENU cgraphics_menu_get_native_parent( widget_t *widget, list_item_t *item )
 		return widget->native;
 	else
 	{
-		pitem = item->object.parent;
+		pitem = (list_item_t *)item->object.parent;
 		
 		if ( pitem->native == 0 )
 		{

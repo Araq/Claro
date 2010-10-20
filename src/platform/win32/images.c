@@ -32,7 +32,6 @@ void cgraphics_png_image_load( image_t *img, const char *file )
 	BITMAPINFO bmi;
 	int lpdib_size, lpdib_bits_offs;
 	void *lpbits, *lpbits2;
-	char buf[1000];
 	
 	pngdib = pngdib_p2d_init( );
 	if ( !pngdib ) return;
@@ -88,6 +87,8 @@ void cgraphics_png_image_load( image_t *img, const char *file )
 }
 
 #endif
+
+#if 0 /* I don't have IImgCtx.h */
 
 #include <initguid.h>
 #include "IImgCtx.h"
@@ -204,6 +205,16 @@ void cgraphics_image_load( image_t *img, const char *file )
 	
 	//m_pImgCtx->lpVtbl->Release( m_pImgCtx );
 }
+
+#else
+void cgraphics_image_load( image_t *img, const char *file )
+{
+    // we only support PNG. So what?
+    cgraphics_png_image_load( img, file );
+}
+#endif
+
+
 
 void cgraphics_image_load_inline_png( image_t *img, const unsigned char * data, int len )
 {

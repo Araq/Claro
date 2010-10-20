@@ -18,6 +18,8 @@
 
 #include "platform/win32.h"
 
+widget_t* cgraphics_get_widget_window(widget_t* w);
+
 void cgraphics_workspace_widget_create( widget_t *widget )
 {
 	object_t *object = (object_t *)widget;
@@ -69,7 +71,7 @@ object_t *cgraphics_workspace_get_active( widget_t *widget )
 	if ( win == 0 )
 		return 0;
 	
-	return GetWindowLong( win, GWL_USERDATA );;
+	return (object_t*)GetWindowLong( win, GWL_USERDATA );;
 }
 
 void cgraphics_workspace_cascade( widget_t *widget )
@@ -227,8 +229,8 @@ void cgraphics_workspace_window_widget_create( widget_t *widget )
 	widget->native = hwnd;
 	widget->container = rhwnd;
 	
-	SetWindowLong( widget->native, GWL_USERDATA, widget );
-	SetWindowLong( widget->container, GWL_USERDATA, widget );
+	SetWindowLong( widget->native, GWL_USERDATA, (LONG)widget );
+	SetWindowLong( widget->container, GWL_USERDATA, (LONG)widget );
 }
 
 void cgraphics_workspace_window_update_title( widget_t *widget )

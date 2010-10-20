@@ -85,11 +85,12 @@ IMPORT_LIBS = []
 DEFINES = []
 INCLUDE_DIRS = ["include"]
 LINK_FLAGS = ""
-CC_FLAGS = "-g -Wall -Wfatal-errors -Werror"
+CC_FLAGS = "-g -Wall -Werror"
 CC = "gcc"
 
 if getHost() == "windows":
-  DEFINES += ['IMAGES_USE_LIBPNG']
+  DEFINES += ['IMAGES_USE_LIBPNG', 'NO_CAIRO']
+  
 elif getHost() == "macosx":
   INCLUDE_DIRS += ['/usr/local/include/cairo', '/usr/include/cairo']
   CC_FLAGS += " -fno-common"
@@ -188,8 +189,7 @@ if getHost() == "windows":
   ]
   IMPORT_LIBS += [
     'gdi32', 'comctl32', 
-    'ole32', 'msvcp60', 'Msimg32', 'png', 'z', 'opengl32', 'glu32',
-    'cairo'
+    'ole32', 'msvcp60', 'Msimg32', 'opengl32', 'glu32', 'png', 'z'
   ]
 elif getHost() == "macosx":
   CLARO_FILES += [
@@ -453,7 +453,8 @@ def Mkdir(dest):
   except OSError:
     Warn("could not create directory: " + d)
 
-def Glob(pattern): # needed because glob.glob() is buggy on Windows 95:
+def Glob(pattern): 
+  # needed because glob.glob() is buggy on Windows 95:
   # things like tests/t*.nim won't work
   global _baseDir
   (head, tail) = os.path.split(Path(pattern))
@@ -584,9 +585,13 @@ def buildLinkFlags(cc):
   
 def Compile(outputfile, files, 
             ccflags="", linkflags="", target="exe", cc=CC): 
+  global force
   if target == "dll":
-    ccflags += " -fPIC"
-    linkflags += " -shared -fPIC"
+    if getHost() == "windows":
+      linkflags += " -shared"
+    else:
+      ccflags += " -fPIC"
+      linkflags += " -shared -fPIC"
     ofile = DllExt(outputfile)
   elif target == "exe": 
     ofile = ExeExt(outputfile)
@@ -594,7 +599,10 @@ def Compile(outputfile, files,
     Error("unknown target " + type)
   linkCmd = ""
   for f in files:
-    Exec(Subs("$# -c $# -o $# $#", cc, ccflags, ObjExt(f), f))
+    c = Changed(f, f)
+    if c.check() or force:
+      Exec(Subs("$# -c $# -o $# $#", cc, ccflags, ObjExt(f), f))
+      c.success()
     linkCmd += " " + ObjExt(f)
   Exec(Subs("$# $# -o $# $#", cc, linkflags, ofile, linkCmd))
 
@@ -605,7 +613,7 @@ def cmd_claro(ccflags):
           "dll", CC)
 
 def cmd_examples(ccflags):
-  ccflags += ccflags + " -Iclaro"
+  ccflags += ccflags + " -Iinclude"
   Compile("build/hello", ["examples/helloworld/hello.c"], ccflags)
   Compile("build/radio", ["examples/radio/radio.c"], ccflags)
   Compile("build/combo", ["examples/combo/combo.c"], ccflags)

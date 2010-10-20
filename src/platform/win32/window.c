@@ -18,7 +18,7 @@
 
 #include "platform/win32.h"
 #include <initguid.h>
-#include "IImgCtx.h"
+//#include "IImgCtx.h"
 
 /* Win32 header file issue */
 #ifndef LPNMLVDISPINFO
@@ -89,7 +89,7 @@ void dialog_stack_push( widget_t *w )
 	
 	claro_current_dialog = w;
 	
-	p = w->object.parent;
+	p = (widget_t*)w->object.parent;
 	
 	if ( p != 0 )
 	{
@@ -127,7 +127,7 @@ void dialog_stack_pop( widget_t *w )
 		widget_t *p;
 		
 		// that was the last one :)
-		p = w->object.parent;
+		p = (widget_t*)w->object.parent;
 		
 		if ( p != 0 )
 			EnableWindow( p->native, true );
@@ -141,6 +141,7 @@ int dialog_stack_check( widget_t *r )
 	{
 		SetFocus( claro_current_dialog->native );
 	}
+	return 0;
 }
 
 #if 0
@@ -249,10 +250,10 @@ LRESULT CALLBACK cg_win32_proc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 				break;
 #endif
 			case WM_MOVE:
-				widget_set_content_position( w, LOWORD(lParam), HIWORD(lParam), 1 );
+				widget_set_content_position((void*)w, LOWORD(lParam), HIWORD(lParam), 1);
 			case WM_SIZE:
 				//InvalidateRgn( hWnd, 0, 0 );
-				widget_set_content_size( w, LOWORD(lParam), HIWORD(lParam), 1 );
+				widget_set_content_size((void*)w, LOWORD(lParam), HIWORD(lParam), 1);
 				
 				break;
 			case WM_CTLCOLORSTATIC:
@@ -267,9 +268,7 @@ LRESULT CALLBACK cg_win32_proc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 				{
 					LPNMTTDISPINFO ttdi;
 					LPNMLVDISPINFO lvdi;
-					LPNMTVDISPINFO tvdi;
 					LVITEM *litem;
-					TVITEM *titem;
 					list_item_t *li;
 					list_widget_t *lw;
 					
@@ -280,7 +279,7 @@ LRESULT CALLBACK cg_win32_proc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 						{
 							LPNMTREEVIEW nmtv = (LPNMTREEVIEW)lParam;
 							list_item_t *item = (list_item_t *)nmtv->itemNew.lParam;
-							treeview_widget_t *tw = (treeview_widget_t *)cg_find_by_native( hdr->hwndFrom );
+							treeview_widget_t *tw = (treeview_widget_t*)cg_find_by_native(hdr->hwndFrom);
 							
 							tw->selected = item;
 							
@@ -331,7 +330,7 @@ LRESULT CALLBACK cg_win32_proc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 						if ( !strcmp( OBJECT(w)->type, "claro.graphics.widgets.listview" ) )
 						{
 							int a = SendMessage( w->native, LVM_GETHOTITEM, 0, 0 );
-							list_item_t *li = list_widget_get_row( w, 0, a );
+							list_item_t *li = list_widget_get_row( OBJECT(w), 0, a );
 							listview_widget_t *lvw = (listview_widget_t *)w;
 							
 							lvw->selected = li;
@@ -363,7 +362,7 @@ LRESULT CALLBACK cg_win32_proc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 						lvdi = (LPNMLVDISPINFO)lParam;
 						litem = (LVITEM *)&(lvdi->item);
 						
-						li = list_widget_get_row( w, 0, litem->iItem );
+						li = list_widget_get_row( OBJECT(w), 0, litem->iItem );
 						
 						if ( li )
 						{
@@ -395,7 +394,7 @@ LRESULT CALLBACK cg_win32_proc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 										w->native,
 										NULL, (HINSTANCE) GetModuleHandle( NULL ), NULL );
 									SendMessage( hwnds[litem->iSubItem], BM_SETCHECK, (*((int *)li->data[litem->iSubItem])?BST_CHECKED:0), 0 );
-									SetWindowLong( hwnds[litem->iSubItem], GWL_USERDATA, li );
+									SetWindowLong( hwnds[litem->iSubItem], GWL_USERDATA, (size_t)li );
 									ShowWindow( hwnds[litem->iSubItem], SW_SHOW );
 									UpdateWindow( hwnds[litem->iSubItem] );
 								}
@@ -407,7 +406,7 @@ LRESULT CALLBACK cg_win32_proc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 								
 								if ( hwnds[litem->iSubItem] == 0 )
 								{
-									double **v = li->data;
+									double **v = (double**)li->data;
 									double rv = *(v[litem->iSubItem]);
 									int intpos = (int)((float)rv * 65535.0);
 									
@@ -420,7 +419,7 @@ LRESULT CALLBACK cg_win32_proc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 									SendMessage( hwnds[litem->iSubItem], PBM_SETRANGE, 0, MAKELPARAM( 0, 65535 ) );
 									SendMessage( hwnds[litem->iSubItem], PBM_SETPOS, intpos, 0 );
 									
-									SetWindowLong( hwnds[litem->iSubItem], GWL_USERDATA, li );
+									SetWindowLong( hwnds[litem->iSubItem], GWL_USERDATA, (size_t)li );
 									
 									ShowWindow( hwnds[litem->iSubItem], SW_SHOW );
 									UpdateWindow( hwnds[litem->iSubItem] );
@@ -527,7 +526,7 @@ LRESULT CALLBACK cg_win32_proc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 									i = lvcd->iSubItem;
 									lw = (list_widget_t *)w;
 									
-									li = list_widget_get_row( w, 0, cd->dwItemSpec );
+									li = list_widget_get_row( OBJECT(w), 0, cd->dwItemSpec );
 									
 									if ( li == 0 )
 										return CDRF_DODEFAULT;
@@ -545,7 +544,7 @@ LRESULT CALLBACK cg_win32_proc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 										if ( hwndi )
 										{
 											r.left = LVIR_BOUNDS;
-											SendMessage( w->native, LVM_GETITEMRECT, cd->dwItemSpec, &r );
+											SendMessage( w->native, LVM_GETITEMRECT, cd->dwItemSpec, (size_t)&r );
 											MoveWindow( hwndi, (cd->rc.left+r.left), r.top, (cd->rc.right+r.left)-(cd->rc.left+r.left), r.bottom-r.top, true );
 											InvalidateRect( hwndi, NULL, true );
 										}
@@ -560,7 +559,7 @@ LRESULT CALLBACK cg_win32_proc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 										if ( hwndi )
 										{
 											r.left = LVIR_BOUNDS;
-											SendMessage( w->native, LVM_GETITEMRECT, cd->dwItemSpec, &r );
+											SendMessage( w->native, LVM_GETITEMRECT, cd->dwItemSpec, (size_t)&r );
 											MoveWindow( hwndi, (cd->rc.left+r.left), r.top, (cd->rc.right+r.left)-(cd->rc.left+r.left), r.bottom-r.top, true );
 											InvalidateRect( hwndi, NULL, true );
 										}
@@ -701,7 +700,7 @@ LRESULT CALLBACK cg_win32_proc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 			return 0;
 		case WM_MOVE:
 			GetWindowRect( w->native, &r );
-			widget_set_position( w, r.left, r.top, 1 );
+			widget_set_position( OBJECT(w), r.left, r.top, 1 );
 			//widget_set_position( w, LOWORD(lParam), HIWORD(lParam), 1 );
 			break;
 		case WM_MEASUREITEM:
@@ -867,7 +866,7 @@ LRESULT CALLBACK cg_win32_proc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 		case WM_SIZE:
 			//InvalidateRgn( hWnd, 0, 0 );
 			
-			widget_set_size( w, LOWORD(lParam), HIWORD(lParam), 1 );
+			widget_set_size( OBJECT(w), LOWORD(lParam), HIWORD(lParam), 1 );
 			
 			if ( wParam == SIZE_MAXIMIZED )
 				event_send( OBJECT(w), "maximized", "" );
@@ -1206,8 +1205,8 @@ void cgraphics_window_widget_create( widget_t *widget )
 	widget->native = hwnd;
 	widget->container = rhwnd;
 	
-	SetWindowLong( widget->native, GWL_USERDATA, widget );
-	SetWindowLong( widget->container, GWL_USERDATA, widget );
+	SetWindowLong( widget->native, GWL_USERDATA, (size_t)widget );
+	SetWindowLong( widget->container, GWL_USERDATA, (size_t)widget );
 }
 
 void cgraphics_window_show( widget_t *w )
