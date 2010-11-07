@@ -18,7 +18,6 @@
 
 #include <claro/graphics.h>
 
-
 CLFEXP object_t * status_icon_create(object_t *parent, image_t * icon, int flags)
 {
     status_icon_t * status;

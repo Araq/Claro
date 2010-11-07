@@ -318,7 +318,8 @@ def Subs(frmt, *args, **substitution):
       result.append(frmt[i])
       i = i+1
   return join(result, "")
-# --------------------- constants  ----------------------------------------
+
+# --------------------- constants  ----------------------------------------
 
 EXPLAIN = true
 force = false

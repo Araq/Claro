@@ -132,7 +132,8 @@ int event_send( object_t *object, const char *event, const char *fmt, ... )
 
 	va_end( argp );
 	
-	sprintf( tmp, "Event '%s' sent to object '%s' at %p", event, object->type, object );
+	sprintf(tmp, "Event '%s' sent to object '%s' at %p", event, 
+	        object->type, object);
 	
 	LIST_FOREACH( n, object->event_handlers.head )
 	{
@@ -280,7 +281,8 @@ void object_set_parent( object_t *obj, object_t *parent )
 			node_free( n );
 		}
 		else
-			clog( CL_ERROR, "Object has a parent listed, but the parent's children list doesn't contain it." );
+			clog( CL_ERROR,	"Object has a parent listed, but the parent's "
+			                "children list doesn't contain it." );
 	}
 	
 	if ( parent != 0 )

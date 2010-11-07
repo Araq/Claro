@@ -18,6 +18,10 @@
 
 #include "base.h"
 
+#ifndef _WIN32
+#  define HAVE_MMAP
+#endif
+
 #ifndef HAVE_MMAP
 /*
  * static void mmap(void *hint, size_t len, uint32_t prot,
