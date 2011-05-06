@@ -83,16 +83,18 @@ def ExecProcess(cmd):
 
 IMPORT_LIBS = []
 DEFINES = []
-INCLUDE_DIRS = ["include"]
+INCLUDE_DIRS = ["include", "include/platform"]
 LINK_FLAGS = ""
-CC_FLAGS = "-g -Wall -Werror"
+CC_FLAGS = "-g -Wall "
 CC = "gcc"
 
 if getHost() == "windows":
   DEFINES += ['IMAGES_USE_LIBPNG', 'NO_CAIRO']
+  CC_FLAGS += " -Werror"
   
 elif getHost() == "macosx":
-  INCLUDE_DIRS += ['/usr/local/include/cairo', '/usr/include/cairo']
+  INCLUDE_DIRS += ['/usr/local/include/cairo', '/usr/include/cairo', 
+                   'include/platform/cocoa']
   CC_FLAGS += " -fno-common"
   LINK_FLAGS += " -framework Carbon -framework Cocoa -dynamiclib"
   DEFINES += ["_MAC", "NO_CAIRO"]
@@ -102,6 +104,7 @@ else:
   LINK_FLAGS += " " + ExecProcess("pkg-config --libs" + deps)
   CC_FLAGS += " " + ExecProcess("pkg-config --cflags" + deps)
   DEFINES += ["_NIX", "PIC"]
+  CC_FLAGS += " -Werror"
 
 CLARO_FILES = [
   "src/block.c",
@@ -590,6 +593,9 @@ def Compile(outputfile, files,
   if target == "dll":
     if getHost() == "windows":
       linkflags += " -shared"
+    elif getHost() == "macosx":
+      ccflags += " -fPIC"
+      linkflags += " -fPIC"
     else:
       ccflags += " -fPIC"
       linkflags += " -shared -fPIC"

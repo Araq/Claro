@@ -17,6 +17,7 @@
 
 
 #define _PLATFORM_INC
+#include <unistd.h>
 #include "graphics.h"
 // //#include <cairo-quartz.h>
 #include "macosx_cocoa.h"
@@ -143,25 +144,25 @@ NSView *cgraphics_get_native_parent( widget_t *widget )
 	
 	if ( !strcmp( wp->object.type, "claro.graphics.widgets.window" ) )
 	{
-		parent = (NSWindow *)widget_get_container( wp );
+		parent = (NSWindow *)widget_get_container( (object_t*)wp );
 		return [parent contentView];
 	}
 	else
 	{
-		return (NSView *)widget_get_container( wp );
+		return (NSView *)widget_get_container( (object_t*)wp );
 	}
 }
 
 /* General widgets */
 
-#include "cocoa/RBSplitView/RBSplitView.h"
-#include "cocoa/RBSplitView/RBSplitSubview.h"
+#include "cocoa/RBSplitView.h"
+#include "cocoa/RBSplitSubview.h"
 
 void cgraphics_widget_show( widget_t *widget )
 {
 	NSControl *ctl = (NSControl *)widget->native;
 	NSView *osparent;
-	//NSView *parent = cgraphics_get_native_parent( widget );
+	//NSView *parent = cgraphics_get_native_parent( (object_t*)widget );
 	
 	if ( !strcmp( widget->object.type, "claro.graphics.widgets.toolbar" ) )
 		return;
@@ -197,7 +198,7 @@ void cgraphics_widget_hide( widget_t *widget )
 void cgraphics_widget_focus( widget_t *widget )
 {
 	NSControl *ctl = (NSControl *)widget->native;
-	NSView *parent = cgraphics_get_native_parent( widget );
+	NSView *parent = cgraphics_get_native_parent( WIDGET(widget) );
 	NSWindow *window = [parent window];
 	
 	[window makeFirstResponder: ctl];
@@ -219,7 +220,7 @@ void cgraphics_widget_disable( widget_t *widget )
 
 void cgraphics_widget_close( widget_t *widget )
 {
-	NSWindow *ctl = (NSControl *)widget->native;
+	//NSWindow *ctl = (NSControl *)widget->native;
 	
 	if ( !strcmp( OBJECT(widget)->type, "claro.graphics.widgets.window" ) )
 	{

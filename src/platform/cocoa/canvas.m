@@ -68,14 +68,10 @@
 	NSRect frame = [self frame];
 	widget_set_size( cw, frame.size.width, frame.size.height, 1 );
 
-	cairo_surface_destroy( cvsw->surface );
-	cvsw->surface = NULL;
-/*	
 #ifndef NO_CAIRO
 	cairo_surface_destroy( cvsw->surface );
 	cvsw->surface = cairo_quartz_surface_create( cgr, true, cw->size_req->w, cw->size_req->h );
 #endif
-*/
 }
 
 - (void)claroMove:(NSNotification *)aNotification
@@ -199,29 +195,22 @@ event_send( OBJECT(cw), e, "ii", (int)pt.x, (int)pt.y );
 	
 	/*cairo_rectangle( cvsw->cr, aRect.origin.x, aRect.origin.y, aRect.size.width, aRect.size.height );
 	cairo_clip( cvsw->cr );*/
-#endif
-	event_send( OBJECT(cw), "redraw", "p", cvsw->cr );
-#ifndef NO_CAIRO
-	
+	event_send( OBJECT(cw), "redraw", "p", cvsw->cr );	
 	cairo_destroy( cvsw->cr );
 	
 	/****/
-	
-#endif
-	
-#ifndef NO_CAIRO
-	cairo_surface_flush( cvsw->surface );
+      	cairo_surface_flush( cvsw->surface );
 #endif
 	CGContextFlush( context );
 }
 
-/*
+
 #ifndef NO_CAIRO
 cairo_surface_t *cairo_quartz_surface_create(CGContextRef context,
-						 cairo_bool_t flipped,
-											 int width, int height);
+	cairo_bool_t flipped, int width, int height);
 #endif
-*/
+
+
 - (void)setClaroWidget:(widget_t *)widget
 {
 	cw = widget;
