@@ -196,7 +196,6 @@ void block_heap_loginfo( )
 {
 	node_t *hn, *bn;
 	block_heap_t *heap;
-	block_t *block;
 	
 	int mem_usage = 0, mem_unused = 0;
 	int raw_usage = 0;
@@ -211,7 +210,6 @@ void block_heap_loginfo( )
 		
 		LIST_FOREACH( bn, heap->blocks.head )
 		{
-			block = (block_t *)bn;
 			block_count++;
 			
 			mem_usage += heap->elem_size * heap->block_elems;

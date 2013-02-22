@@ -85,7 +85,7 @@ IMPORT_LIBS = []
 DEFINES = []
 INCLUDE_DIRS = ["include", "include/platform"]
 LINK_FLAGS = ""
-CC_FLAGS = "-g -Wall "
+CC_FLAGS = "-g -Wall -Wno-unused-but-set-variable "
 CC = "gcc"
 
 if getHost() == "windows":
@@ -654,7 +654,6 @@ Possible Commands:
   claro [options]      builds the Claro library (with options)
   examples [options]   builds the examples (with options)
   clean                cleans Claro project; removes generated files
-  install [prefix]     installs the Claro library; requires sudo
 """, CLARO_VERSION + ' ' * (44-len(CLARO_VERSION)), sys.version)
 
 def main(args):
