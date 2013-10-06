@@ -19,8 +19,6 @@ import sys, os, os.path, re, shutil, time, getopt, glob, zlib, pickle
 python3 = sys.version[0] >= "3"
 python26 = sys.version[0] == "2" and sys.version[2] >= "6"
 
-true, false = 0==0, 0==1
-
 if python3:
   sys.exit("This script does not yet work with Python 3.0")
 
@@ -91,9 +89,9 @@ CC = "gcc"
 if getHost() == "windows":
   DEFINES += ['IMAGES_USE_LIBPNG', 'NO_CAIRO']
   CC_FLAGS += " -Werror"
-  
+
 elif getHost() == "macosx":
-  INCLUDE_DIRS += ['/usr/local/include/cairo', '/usr/include/cairo', 
+  INCLUDE_DIRS += ['/usr/local/include/cairo', '/usr/include/cairo',
                    'include/platform/cocoa']
   CC_FLAGS += " -fno-common"
   LINK_FLAGS += " -framework Carbon -framework Cocoa -dynamiclib"
@@ -114,10 +112,10 @@ CLARO_FILES = [
   "src/log.c",
   "src/memory.c",
   "src/object.c",
-  "src/oscompat.c", 
-  "src/store.c", 
-  "src/object_map.c", 
-  
+  "src/oscompat.c",
+  "src/store.c",
+  "src/object_map.c",
+
   "src/widgets/window.c",
   "src/widgets/toolbar.c",
   "src/widgets/textbox.c",
@@ -145,11 +143,11 @@ CLARO_FILES = [
   "src/widgets/opengl.c",
   "src/widgets/treeview.c",
   "src/widgets/stock.c",
-  
+
   "src/layout_parser.c",
   "src/layout.c",
   "src/layout_heap.c",
-  
+
   "src/widget.c",
   "src/graphics.c",
   "src/image.c",
@@ -184,14 +182,14 @@ if getHost() == "windows":
     "src/platform/win32/workspace.c",
     "src/platform/win32/opengl.c",
     "src/platform/win32/treeview.c",
-    
+
     "src/platform/win32/pngdib.c",
     "src/platform/win32/font.c",
     "src/platform/win32/images.c",
     "src/platform/win32/system.c",
   ]
   IMPORT_LIBS += [
-    'gdi32', 'comctl32', 
+    'gdi32', 'comctl32',
     'ole32', 'msvcp60', 'Msimg32', 'opengl32', 'glu32', 'png', 'z'
   ]
 elif getHost() == "macosx":
@@ -221,18 +219,18 @@ elif getHost() == "macosx":
     "src/platform/cocoa/workspace.m",
     "src/platform/cocoa/opengl.m",
     "src/platform/cocoa/treeview.m",
-    
+
     "src/platform/cocoa/font.m",
     "src/platform/cocoa/images.m",
     "src/platform/cocoa/system.m",
-    
+
     "src/platform/cocoa/RBSplitView.m",
     "src/platform/cocoa/RBSplitSubview.m",
   ]
 else:
   CLARO_FILES += [
-    "src/platform/gtk.c", 
-    "src/platform/gdkcairo.c", 
+    "src/platform/gtk.c",
+    "src/platform/gdkcairo.c",
     "src/platform/gtkcairo.c",
     "src/platform/gtk/window.c",
     "src/platform/gtk/toolbar.c",
@@ -258,12 +256,12 @@ else:
     "src/platform/gtk/workspace.c",
     "src/platform/gtk/opengl.c",
     "src/platform/gtk/treeview.c",
-    
+
     "src/platform/gtk/font.c",
     "src/platform/gtk/images.c",
     "src/platform/gtk/system.c",
   ]
-  
+
 def mydigest(hasher):
   result = ""
   for c in hasher.digest():
@@ -316,7 +314,7 @@ def Subs(frmt, *args, **substitution):
         else:
           result.append(str(d[x]))
       else:
-        assert(false)
+        assert(False)
     else:
       result.append(frmt[i])
       i = i+1
@@ -324,8 +322,8 @@ def Subs(frmt, *args, **substitution):
 
 # --------------------- constants  ----------------------------------------
 
-EXPLAIN = true
-force = false
+EXPLAIN = True
+force = False
 
 # --------------------------------------------------------------------------
 
@@ -341,14 +339,14 @@ _FINGERPRINTS_FILE = "koch.dat"
 
 def SameFileContent(filenameA, filenameB):
   SIZE = 4096*2
-  result = true
+  result = True
   a = open(filenameA, "rb")
   b = open(filenameB, "rb")
-  while true:
+  while True:
     x = a.read(SIZE)
     y = b.read(SIZE)
     if x != y:
-      result = false
+      result = False
       break
     elif len(x) < SIZE: # EOF?
       break
@@ -457,7 +455,7 @@ def Mkdir(dest):
   except OSError:
     Warn("could not create directory: " + d)
 
-def Glob(pattern): 
+def Glob(pattern):
   # needed because glob.glob() is buggy on Windows 95:
   # things like tests/t*.nim won't work
   global _baseDir
@@ -509,7 +507,7 @@ def MakeExe(file):
 
 class Changed:
   """ Returns a Changed object. check() returns true iff one of the
-      given files has changed. You have to call the object's success() 
+      given files has changed. You have to call the object's success()
       method if the build has been a success.
 
       Example:
@@ -517,11 +515,11 @@ class Changed:
       c = Changed("unique_name", "file1.pas file2.pas file3.pas")
       if c.check():
         Exec("fpc file1.pas")
-        # Exec raises an exception if it fails, thus if we reach the 
+        # Exec raises an exception if it fails, thus if we reach the
         # next statement, it was a success:
         c.success()
   """
-  def __init__(self, id, files, explain=false,
+  def __init__(self, id, files, explain=False,
                fingerprintsfile=_FINGERPRINTS_FILE):
     # load the fingerprints file:
     # fingerprints is a dict[target, files] where files is a dict[filename, hash]
@@ -546,22 +544,22 @@ class Changed:
   def check(self):
     if type(self.files) == type(""):
       self.files = split(self.files)
-    result = false
+    result = False
     target = self.id
     if not has_key(self.fingers, target):
       self.fingers[target] = {}
       if self.explain: _Info(Subs("no entries for target '$1'", target))
-      result = true
+      result = True
     for d in self.files:
       if Exists(d):
         n = self._hashFile(d)
         if not has_key(self.fingers[target], d) or n != self.fingers[target][d]:
-          result = true
+          result = True
           if self.explain: _Info(Subs("'$1' modified since last build", d))
           self.fingers[target][d] = n
       else:
         Warn(Subs("'$1' does not exist!", d))
-        result = true
+        result = True
     return result
 
   def update(self, filename):
@@ -572,7 +570,7 @@ class Changed:
 
 # ----------------------------- call compiler ---------------------------------
 
-def buildCcFlags(cc): 
+def buildCcFlags(cc):
   # XXX don't ignore cc
   result = CC_FLAGS
   for d in DEFINES:
@@ -586,9 +584,9 @@ def buildLinkFlags(cc):
   for i in IMPORT_LIBS:
     result += " -l" + i
   return result
-  
-def Compile(outputfile, files, 
-            ccflags="", linkflags="", target="exe", cc=CC): 
+
+def Compile(outputfile, files,
+            ccflags="", linkflags="", target="exe", cc=CC):
   global force
   if target == "dll":
     if getHost() == "windows":
@@ -600,9 +598,9 @@ def Compile(outputfile, files,
       ccflags += " -fPIC"
       linkflags += " -shared -fPIC"
     ofile = DllExt(outputfile)
-  elif target == "exe": 
+  elif target == "exe":
     ofile = ExeExt(outputfile)
-  else: 
+  else:
     Error("unknown target " + type)
   linkCmd = ""
   for f in files:
@@ -614,9 +612,9 @@ def Compile(outputfile, files,
   Exec(Subs("$# $# -o $# $#", cc, linkflags, ofile, linkCmd))
 
 def cmd_claro(ccflags):
-  Compile("build/claro", CLARO_FILES, 
-          buildCcFlags(CC) + " " + ccflags, 
-          buildLinkFlags(CC), 
+  Compile("build/claro", CLARO_FILES,
+          buildCcFlags(CC) + " " + ccflags,
+          buildLinkFlags(CC),
           "dll", CC)
 
 def cmd_examples(ccflags):
@@ -665,16 +663,16 @@ def main(args):
       a = args[i]
       if a in ("--force", "-f", "-B", "-b"):
         global force
-        force = true
+        force = True
       elif a in ("-h", "--help", "-?"):
         print(HELP)
         return
       elif a == "--diff":
         global GENERATE_DIFF
-        GENERATE_DIFF = true
+        GENERATE_DIFF = True
       elif a == "--no_fpc":
         global USE_FPC
-        USE_FPC = false
+        USE_FPC = False
       else:
         Error("illegal option: " + a)
       i = i + 1
@@ -685,11 +683,11 @@ def main(args):
     elif cmd == "clean": cmd_clean()
     elif cmd == "install": cmd_install(cmdArgs)
     else: Error("illegal command: " + cmd)
-    
+
 def cmd_install(prefix):
   # XXX to implement
   pass
-  
+
 # ------------------------------ clean ----------------------------------------
 
 CLEAN_EXT = "o obj"
@@ -706,7 +704,7 @@ def cmd_clean(dir = "."):
   for f in Glob("doc/*.html"): Remove(f)
   def visit(extRegEx, dirname, names):
     if os.path.split(dirname)[1] == "nimcache":
-      shutil.rmtree(path=dirname, ignore_errors=true)
+      shutil.rmtree(path=dirname, ignore_errors=True)
       del names
     else:
       for name in names:
