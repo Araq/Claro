@@ -1,0 +1,3 @@
+*.o
+.sconf_temp
+.sconsign.dblite

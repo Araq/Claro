@@ -11,7 +11,8 @@ Nimrod.
 
 To try it out, build it with::
   
-  python koch.py claro
+  python2 koch.py claro
+  python2 koch-example.py examples
 
 
 Enjoy!
